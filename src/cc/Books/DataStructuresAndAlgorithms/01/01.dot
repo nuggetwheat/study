@@ -1,0 +1,30 @@
+graph G {
+0[label="Vultures vs. Beavers"];
+1[label="Vultures vs. Tigers"];
+2[label="Vultures vs. Skunks"];
+3[label="Lions vs. Eagles"];
+4[label="Lions vs. Tigers"];
+5[label="Tigers vs. Beavers"];
+6[label="Eagles vs. Beavers"];
+7[label="Eagles vs. Skunks"];
+8[label="Beavers vs. Skunks"];
+0--1;
+0--2;
+0--5;
+0--6;
+0--8;
+1--2;
+1--4;
+1--5;
+2--7;
+2--8;
+3--4;
+3--6;
+3--7;
+4--5;
+5--6;
+5--8;
+6--7;
+6--8;
+7--8;
+}
