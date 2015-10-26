@@ -27,11 +27,15 @@ add_executable(expr expr.cpp)
 
 add_executable(expr2 expr2.cpp)
 add_executable(gcd gcd.cpp)
+add_executable(quicksort quicksort.cpp)
+add_executable(sort sort.cpp)
 add_executable(tree tree.cpp)
 
 add_test(Sedgewick_Algorithms-expr expr)
 add_test(Sedgewick_Algorithms-expr2 expr2)
 add_test(Sedgewick_Algorithms-gcd gcd)
+add_test(Sedgewick_Algorithms-quicksort quicksort)
+add_test(Sedgewick_Algorithms-sort sort)
 add_test(Sedgewick_Algorithms-tree tree)
 
 
