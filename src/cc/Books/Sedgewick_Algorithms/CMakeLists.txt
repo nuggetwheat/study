@@ -33,6 +33,7 @@ add_executable(quicksort quicksort.cpp)
 add_executable(radixsearch radixsearch.cpp)
 add_executable(search search.cpp)
 add_executable(sort sort.cpp)
+add_executable(stringsearch stringsearch.cpp)
 add_executable(tree tree.cpp)
 
 add_test(Sedgewick_Algorithms-expr expr)
@@ -44,6 +45,7 @@ add_test(Sedgewick_Algorithms-quicksort quicksort)
 add_test(Sedgewick_Algorithms-radixsearch radixsearch)
 add_test(Sedgewick_Algorithms-search search)
 add_test(Sedgewick_Algorithms-sort sort)
+add_test(Sedgewick_Algorithms-stringsearch stringsearch)
 add_test(Sedgewick_Algorithms-tree tree)
 
 
