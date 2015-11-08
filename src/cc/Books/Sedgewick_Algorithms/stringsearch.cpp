@@ -1,6 +1,7 @@
 
 #undef NDEBUG
 
+#include <algorithm>
 #include <cassert>
 #include <cstring>
 #include <cstdlib>
@@ -55,37 +56,62 @@ int kmp_search(char *text, char *pattern, int start) {
 }
 
 
-class BadCharSkipper {
+class BadCharRule {
 public:
-  BadCharSkipper(const char *pattern) {
+  BadCharRule(const char *pattern)
+  : m_shifts(new map<char, int>[strlen(pattern)]) {
     map<char, int> lastoffset;
     for (auto i = 0; pattern[i]; ++i)
       lastoffset[pattern[i]] = -1;
     for (auto i = 0; pattern[i]; ++i) {
       for (auto &entry : lastoffset) {
         if (entry.first == pattern[i]) {
-          m_skips[i][entry.first] = 0;
+          m_shifts[i][entry.first] = 0;
           lastoffset[entry.first] = i;
         }
         else 
-          m_skips[i][entry.first] = i - lastoffset[entry.first];
+          m_shifts[i][entry.first] = i - lastoffset[entry.first];
       }
     }
   }
-  int get(int offset, char c) {
-    auto iter = m_skips[offset].find(c);
-    if (iter == m_skips[offset].end())
+  int shift(int offset, char c) {
+    auto iter = m_shifts[offset].find(c);
+    if (iter == m_shifts[offset].end())
       return offset + 1;
     return iter->second;
   }
-  void print() {
-    for (auto &entry : m_skips) {
-      for (auto &e2 : entry.second)
-        cout << "data[" << entry.first << "][" << e2.first << "] = " << e2.second << endl;
+private:
+  unique_ptr<map<char, int>[]> m_shifts;
+};
+
+
+class GoodSuffixRule {
+public:
+  GoodSuffixRule(const char *pattern) :
+    m_plen(strlen(pattern)), m_shifts(new int[m_plen]) {
+    assert(*pattern);
+    int lastpos = m_plen - 1;
+    m_shifts[lastpos] = 0;
+    int i, j;
+    for (j = lastpos-1; j>0; --j) {
+      for (i=j-1; i>=0; --i) {
+        if (!strncmp(&pattern[i], &pattern[j+1], lastpos-j)) {
+          m_shifts[j] = j - i;
+          break;
+        }
+      }
+      if (i < 0)
+        break;
     }
+    while (j >= 0)
+      m_shifts[j--] = 0;
+  }
+  int shift(int offset) {
+    return m_shifts[offset];
   }
 private:
-  map<int, map<char, int>> m_skips;
+  size_t m_plen {};
+  unique_ptr<int[]> m_shifts;
 };
 
 bool advance_index(const char *text, int &i, int n) {
@@ -96,7 +122,7 @@ bool advance_index(const char *text, int &i, int n) {
   return true;
 }
 
-int bm_search(char *text, char *pattern, int start, BadCharSkipper &bcs) {
+int bm_search(char *text, char *pattern, int start, BadCharRule &bcs, GoodSuffixRule &gss) {
   size_t plen = strlen(pattern);
   int i = start;
   int j = plen - 1;
@@ -110,7 +136,7 @@ int bm_search(char *text, char *pattern, int start, BadCharSkipper &bcs) {
     }
     if (pattern[j] == text[i])
       return i;
-    shift = bcs.get(j, text[i]);
+    shift = max( bcs.shift(j, text[i]), gss.shift(j) );
     matching = (plen-1) - j;
     if (!advance_index(text, i, shift+matching))
       break;
@@ -134,10 +160,11 @@ int main(int argc, char **argv) {
 
   // Boyer-Moore
   {
-    BadCharSkipper bcs(g_bm_pattern);
+    BadCharRule bcs(g_bm_pattern);
+    GoodSuffixRule gss(g_bm_pattern);
     match = -1;
     cout << "[Boyer-Moore]" << endl;
-    while ((match = bm_search(g_bm_text, g_bm_pattern, match+1, bcs)) > 0)
+    while ((match = bm_search(g_bm_text, g_bm_pattern, match+1, bcs, gss)) > 0)
       cout << "match = " << match << endl;
   }
 
