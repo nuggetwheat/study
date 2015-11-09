@@ -15,10 +15,8 @@
 using namespace std;
 
 namespace {
-  char g_pattern[] = "10100111";
-  char g_text[] = "0110010001010100111010100011101001110";
-  char g_bm_pattern[] = "GTAGCGGCG";
-  char g_bm_text[] =
+  char g_pattern[] = "GTAGCGGCG";
+  char g_text[] =
     "GTTATAGCTGATCGCGGCGTAGCGGCGAAGGCGATTTAGCGGCGTAAGTAGCGGCGATAGCGGCGAAGCGGCGAGCGGCGACGGCGAGGCGAGCGACGAGGTAGCGGCG";
 }
 
@@ -146,6 +144,35 @@ int bm_search(char *text, char *pattern, int start, BadCharRule &bcs, GoodSuffix
 }
 
 
+int rk_search(char *text, char *pattern, int start) {
+  const uint64_t q = 999999999989LL;
+  const uint64_t d = 128;
+  uint64_t dM = 1;
+  size_t i;
+  uint64_t phash = 0;
+  uint64_t thash = 0;
+  int plen = strlen(pattern);
+  for (int j=0; j<plen-1; ++j)
+    dM = (d*dM) % q;
+  for (int j=0; j<plen; ++j)
+    phash = ((phash*d)+pattern[j]) % q;
+  for (i=start; i<start+plen; ++i) {
+    if (text[i] == 0)
+      return -1;
+    thash = ((thash*d)+text[i]) % q;
+  }
+  i=start;
+  while (thash != phash) {
+    if (text[i+plen] == 0)
+      return -1;
+    thash = (thash + (d*q) - (text[i]*dM)) % q;
+    thash = ((thash*d) + text[i+plen]) % q;
+    i++;
+  }
+  return i;
+}
+
+
 int main(int argc, char **argv) {
   int match;
 
@@ -160,11 +187,19 @@ int main(int argc, char **argv) {
 
   // Boyer-Moore
   {
-    BadCharRule bcs(g_bm_pattern);
-    GoodSuffixRule gss(g_bm_pattern);
+    BadCharRule bcs(g_pattern);
+    GoodSuffixRule gss(g_pattern);
     match = -1;
     cout << "[Boyer-Moore]" << endl;
-    while ((match = bm_search(g_bm_text, g_bm_pattern, match+1, bcs, gss)) > 0)
+    while ((match = bm_search(g_text, g_pattern, match+1, bcs, gss)) > 0)
+      cout << "match = " << match << endl;
+  }
+
+  // Rabin-Karp
+  {
+    match = -1;
+    cout << "[Rabin-Karp]" << endl;
+    while ((match = rk_search(g_text, g_pattern, match+1)) > 0)
       cout << "match = " << match << endl;
   }
 
