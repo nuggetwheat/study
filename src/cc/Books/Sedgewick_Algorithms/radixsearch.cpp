@@ -101,7 +101,7 @@ namespace {
   template <typename K>
   Node<K> *radixtree_populate() {
     Node<K> *tree = new Node<K>(g_input[0]);
-    for (int i=1; i<strlen(g_input); ++i)
+    for (size_t i=1; i<strlen(g_input); ++i)
       radixtree_insert(g_input[i], tree);
     return tree;
   }
@@ -109,7 +109,7 @@ namespace {
   template <typename K>
   Node<K> *radixtrie_populate() {
     Node<K> *trie = new Node<K>();
-    for (int i=0; i<strlen(g_input); ++i)
+    for (size_t i=0; i<strlen(g_input); ++i)
       radixtrie_insert(g_input[i], trie);
     return trie;
   }
@@ -122,7 +122,7 @@ int main(int argc, char **argv) {
   cout << "radix tree search" << endl;
 
   // positive tests
-  for (int i=0; i<strlen(g_input); ++i)
+  for (size_t i=0; i<strlen(g_input); ++i)
     assert(radixtree_search(g_input[i], tree) != nullptr);
 
   // negative tests
@@ -134,7 +134,7 @@ int main(int argc, char **argv) {
   Node<char> *trie = radixtrie_populate<char>();
 
   // positive tests
-  for (int i=0; i<strlen(g_input); ++i)
+  for (size_t i=0; i<strlen(g_input); ++i)
     assert(radixtrie_search(g_input[i], trie) != nullptr);
 
   // negative tests

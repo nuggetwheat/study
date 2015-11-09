@@ -18,7 +18,7 @@ namespace {
   class Heap {
   public:
     vector<char> data;
-    size_t size;
+    int size;
   };
 
   void populate_input(Heap &heap) {

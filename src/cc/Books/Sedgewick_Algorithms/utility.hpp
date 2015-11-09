@@ -23,6 +23,6 @@ inline std::ostream &show_binrep(std::ostream &out, const T& a)
   const char* end = beg + sizeof(a);
   out << a << ",";
   while(beg != end)
-    out << std::bitset<CHAR_BIT>(*beg++);
+    out << std::bitset<8>(*beg++);
   return out;
 }

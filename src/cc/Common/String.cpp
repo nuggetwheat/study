@@ -24,6 +24,7 @@
 
 #include "String.hpp"
 
+#include <cstdarg>
 #include <cstdlib>
 
 using namespace study;

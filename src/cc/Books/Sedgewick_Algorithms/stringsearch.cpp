@@ -30,7 +30,7 @@ void kmp_fill_next_array(const char *pattern, vector<int> &next) {
       next[++i] = ++j;
     else
       j = next[j];
-  } while (i < next.size());
+  } while (i < (int)next.size());
 }
 
 
@@ -48,7 +48,7 @@ int kmp_search(char *text, char *pattern, int start) {
     else
       j = next[j];
   } while (j < (int)next.size() && i < text_len);
-  if (j == next.size())
+  if (j == (int)next.size())
     return i - next.size();
   return -1;
 }
@@ -156,7 +156,7 @@ int rk_search(char *text, char *pattern, int start) {
     dM = (d*dM) % q;
   for (int j=0; j<plen; ++j)
     phash = ((phash*d)+pattern[j]) % q;
-  for (i=start; i<start+plen; ++i) {
+  for (i=start; i<(size_t)(start+plen); ++i) {
     if (text[i] == 0)
       return -1;
     thash = ((thash*d)+text[i]) % q;
