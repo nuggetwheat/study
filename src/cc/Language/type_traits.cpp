@@ -117,4 +117,36 @@ int main(int argc, char **argv) {
   static_assert(is_array<int[8]>::value, "");
   static_assert(!is_array<int>::value, ""); 
   static_assert(!is_array<int *>::value, ""); 
+
+  // is_pointer
+  static_assert(!is_pointer<int>::value, "");  
+  static_assert(is_pointer<int *>::value, "");  
+  static_assert(is_pointer<const int *>::value, "");
+  static_assert(is_pointer<const volatile int *>::value, "");
+
+  // is_lvalue_reference
+  static_assert(!is_lvalue_reference<int>::value, "");  
+  static_assert(is_lvalue_reference<int &>::value, "");  
+  static_assert(is_lvalue_reference<const int &>::value, "");  
+  static_assert(!is_lvalue_reference<int&&>::value, "");  
+
+  // is_rvalue_reference
+  static_assert(!is_rvalue_reference<int>::value, "");  
+  static_assert(is_rvalue_reference<int &&>::value, "");  
+  static_assert(is_rvalue_reference<const int &&>::value, "");  
+  static_assert(!is_rvalue_reference<int&>::value, "");  
+
+  // is_reference
+  static_assert(!is_reference<int>::value, "");  
+  static_assert(is_reference<int &>::value, "");  
+  static_assert(is_reference<int &&>::value, "");
+  static_assert(is_reference<const int &>::value, "");  
+  static_assert(is_reference<const int &&>::value, "");  
+
+  // is_same
+  static_assert(is_same<int, int>::value, "");
+  static_assert(!is_same<int, char>::value, "");
+
+  
+
 }

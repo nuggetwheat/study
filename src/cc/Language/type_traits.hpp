@@ -98,4 +98,23 @@ namespace study {
   template <typename _Tp> struct is_array<_Tp[]> : public true_type{};
   template <typename _Tp, size_t _Np> struct is_array<_Tp[_Np]> : public true_type{};
 
+  // is_pointer
+  template <typename _Tp> struct __study_is_pointer : public false_type{};
+  template <typename _Tp> struct __study_is_pointer<_Tp *> : public true_type{};
+  template <typename _Tp> struct is_pointer : public __study_is_pointer<typename remove_cv<_Tp>::type>::type {};
+
+  // is_lvalue_reference
+  template <typename _Tp> struct is_lvalue_reference : public false_type {};
+  template <typename _Tp> struct is_lvalue_reference<_Tp&> : public true_type {};
+
+  // is_rvalue_reference
+  template <typename _Tp> struct is_rvalue_reference : public false_type {};
+  template <typename _Tp> struct is_rvalue_reference<_Tp&&> : public true_type {};
+
+  // is_reference
+  template <typename _Tp> struct is_reference : public false_type {};
+  template <typename _Tp> struct is_reference<_Tp&> : public true_type {};
+  template <typename _Tp> struct is_reference<_Tp&&> : public true_type {};
+
+  
 }
