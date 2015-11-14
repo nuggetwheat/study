@@ -1,4 +1,5 @@
 
+#include "cutrod.hpp"
 #include "quicksort.hpp"
 
 using namespace study;
@@ -9,4 +10,6 @@ int main(int argc, char **argv) {
   test_partition();
   test_nth_element();
 
+  // cutrod
+  test_cutrod();
 }
