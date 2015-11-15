@@ -1,0 +1,23 @@
+
+Matrix Chain Multiplication
+
+Given matrices a, b, c, and d
+
+For each matrix m, there are two association choices:
+1. It associates with something to it's right (m
+2. It associates with something to it's left m)
+
+The first matrix only associates to the right, the last matrix only associates
+to the left.  So for the four matrices a, b, c, and d we have the following
+four possibilities:
+
+(a * (b * (c * d)
+(a * (b * c) * d)
+(a * b) * (c * d)
+(a * b) * c) * d)
+
+Since each possible matrix (except the first and the last) has two choices, the
+total number of associations can be expressed as:
+
+2^(n-2) == (2^n)*(2^-2) == (2^n)*(1/4)
+

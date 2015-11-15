@@ -26,6 +26,7 @@ set(SRCS
 cutrod.cpp
 cutrod-test.cpp
 quicksort-test.cpp
+matrix-test.cpp
 )
 
 add_executable(cormen_driver driver.cpp ${SRCS})

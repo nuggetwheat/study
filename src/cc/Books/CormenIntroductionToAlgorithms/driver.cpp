@@ -1,6 +1,7 @@
 
 #include "cutrod.hpp"
 #include "quicksort.hpp"
+#include "matrix.hpp"
 
 using namespace study;
 
@@ -12,4 +13,7 @@ int main(int argc, char **argv) {
 
   // cutrod
   test_cutrod();
+
+  // matrix
+  test_matrix();
 }
