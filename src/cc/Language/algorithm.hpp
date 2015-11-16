@@ -1,5 +1,9 @@
 
+#ifndef Language_algorithm_hpp
+#define Language_algorithm_hpp
+
 #include <cstdlib>
+#include <functional>
 #include <iterator>
 #include <utility>
 
@@ -106,9 +110,60 @@ namespace study {
     return ret;
   }
 
+  template <typename _InputIterator, typename T>
+  _InputIterator find(_InputIterator beg, _InputIterator end,
+                      const T &value) {
+    for (; beg != end; ++beg) {
+      if (*beg == value)
+        break;
+    }
+    return beg;
+  }
 
-  extern void test_for_each();
-  extern void test_count();
-  extern void test_minmax();
+  template <typename _InputIterator, typename _UnaryPredicate>
+  _InputIterator find_if(_InputIterator beg, _InputIterator end,
+                        _UnaryPredicate pred) {
+    for (; beg != end; ++beg) {
+      if (pred(*beg))
+        break;
+    }
+    return beg;
+  }
+
+  template <typename _InputIterator, typename _UnaryPredicate>
+  _InputIterator find_if_not(_InputIterator beg, _InputIterator end,
+                             _UnaryPredicate pred) {
+    for (; beg != end; ++beg) {
+      if (!pred(*beg))
+        break;
+    }
+    return beg;
+  }
+
+  template <typename _BinaryPredicate, typename _ForwardIterator, typename _Size, typename _T>
+  _ForwardIterator search_n(_ForwardIterator beg, _ForwardIterator end,
+                            _Size count, const _T &value, _BinaryPredicate pred) {
+    while (beg != end) {
+      while (beg != end && !pred(*beg, value))
+        ++beg;
+      _ForwardIterator base = beg;
+      _Size found = count;
+      while (beg != end && pred(*beg, value)) {
+        ++beg;
+        if (--found == 0)
+          return base;
+      }
+    }
+    return end;
+  }
+
+  template <typename _ForwardIterator, typename _Size, typename _T>
+  _ForwardIterator search_n(_ForwardIterator beg, _ForwardIterator end,
+                            _Size count, const _T &value) {
+    return study::search_n(beg, end, count, value,
+                           std::bind(std::equal_to<_T>(), std::placeholders::_1, value));
+  }
 
 }
+
+#endif // Language_algorithm_hpp

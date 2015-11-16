@@ -3,9 +3,12 @@
 
 #include <cassert>
 #include <cstdlib>
+#include <deque>
 #include <algorithm>
 #include <functional>
 #include <iostream>
+#include <list>
+#include <sstream>
 #include <vector>
 
 namespace {
@@ -79,6 +82,50 @@ namespace study {
     assert(std::distance(mm.first, mm.second) == 9);
     assert(*study::min_element(values.cbegin(), values.cend(), absLess) == 0);
     assert(*study::max_element(values.cbegin(), values.cend(), absLess) == 6);
+  }
+
+  void test_find() {
+    std::list<int> values(18);
+    int val {};
+    std::generate(values.begin(), values.end(),
+                  [&]() -> int { return (val++%9)+1; });
+    std::list<int>::iterator pos1, pos2;
+    pos1 = study::find(values.begin(), values.end(), 4);
+    if (pos1 != values.end())
+      pos2 = study::find(++pos1, values.end(), 4);
+    std::stringstream ss;
+    if (pos1 != values.end() && pos2 != values.end())
+      std::copy(--pos1, ++pos2, std::ostream_iterator<int>(ss, " "));
+    assert(ss.str().compare("4 5 6 7 8 9 1 2 3 4 ") == 0);
+
+    val = 0;
+    values.resize(9);
+    std::generate(values.begin(), values.end(),
+                  [&]() -> int { return (val++%9)+1; });
+
+    auto pos = study::find_if(values.begin(), values.end(),
+                              std::bind(std::greater<int>(), std::placeholders::_1, 3));
+    assert(std::distance(values.begin(), pos) + 1 == 4);
+
+    pos = study::find_if(values.begin(), values.end(),
+                         [](int elem) { return elem%3 == 0;});
+    assert(std::distance(values.begin(), pos) + 1 == 3);
+
+    pos = study::find_if_not(values.begin(), values.end(),
+                             std::bind(std::less<int>(), std::placeholders::_1, 5));
+    assert(*pos == 5);
+                       
+  }
+
+  void test_search() {
+    std::deque<int> coll{ 1, 2, 7, 7, 6, 3, 9, 5, 7, 7, 7, 3, 6 };
+    auto pos = study::search_n(coll.begin(), coll.end(), 3, 7);
+    assert(std::distance(coll.begin(), pos) == 8);
+    pos = study::search_n(coll.begin(), coll.end(), 4, 0,
+                          [](int elem, int value) {
+                            return elem%2==1;
+                          });
+    assert(std::distance(coll.begin(), pos) == 5);
   }
 
 }

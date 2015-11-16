@@ -1,5 +1,5 @@
 
-#include "algorithm.hpp"
+#include "algorithm-test.hpp"
 
 using namespace study;
 
@@ -9,4 +9,6 @@ int main(int argc, char **argv) {
   test_for_each();
   test_count();
   test_minmax();
+  test_find();
+  test_search();
 }
