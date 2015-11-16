@@ -23,7 +23,9 @@
 #
 
 add_executable(type_traits type_traits.cpp)
+add_executable(algorithm algorithm-test.cpp algorithm-driver.cpp)
 
 add_test(Language-type_traits type_traits)
+add_test(Language-algorithm algorithm)
 
 
