@@ -23,15 +23,11 @@
 #
 
 set(SRCS
-cutrod.cpp
-cutrod-test.cpp
-quicksort-test.cpp
-matrix-test.cpp
-Graph-test.cpp
+ConsecutiveFloors-test.cpp
 )
 
-add_executable(cormen_driver driver.cpp ${SRCS})
+add_executable(tc_driver driver.cpp ${SRCS})
 
-add_test(CormenIntroductionToAlgorithms cormen_driver)
+add_test(TopCoder tc_driver)
 
 

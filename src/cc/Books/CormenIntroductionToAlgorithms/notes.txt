@@ -21,3 +21,14 @@ total number of associations can be expressed as:
 
 2^(n-2) == (2^n)*(2^-2) == (2^n)*(1/4)
 
+------------
+
+Graph Algorithms
+
+Advantages of representing graphs as adjacency matrix vs. adjacency list
+
+Adjacency Matrix
+1. Constant time lookup to determine if edge (u,v) exists
+2. For unweighted graphs, they only need 1 bit per entry
+
+

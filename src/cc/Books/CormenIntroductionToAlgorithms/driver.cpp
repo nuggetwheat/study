@@ -2,6 +2,7 @@
 #include "cutrod.hpp"
 #include "quicksort.hpp"
 #include "matrix.hpp"
+#include "Graph-test.hpp"
 
 using namespace study;
 
@@ -16,4 +17,7 @@ int main(int argc, char **argv) {
 
   // matrix
   test_matrix();
+
+  // Graph
+  test_Graph();
 }

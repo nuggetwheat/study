@@ -164,6 +164,12 @@ namespace study {
                            std::bind(std::equal_to<_T>(), std::placeholders::_1, value));
   }
 
+  template <typename _ForwardIterator1, typename _ForwardIterator2>
+  _ForwardIterator1 search(_ForwardIterator1 beg, _ForwardIterator1 end,
+                           _ForwardIterator2 searchBeg, _ForwardIterator2 searchEnd) {
+    
+  }
+
 }
 
 #endif // Language_algorithm_hpp
