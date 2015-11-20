@@ -164,11 +164,56 @@ namespace study {
                            std::bind(std::equal_to<_T>(), std::placeholders::_1, value));
   }
 
+  template <typename _ForwardIterator1, typename _ForwardIterator2, typename _BinaryPredicate>
+  _ForwardIterator1 search(_ForwardIterator1 beg, _ForwardIterator1 end,
+                           _ForwardIterator2 searchBeg, _ForwardIterator2 searchEnd,
+                           _BinaryPredicate pred) {
+    _ForwardIterator1 iter = beg;
+    while (iter != end && !pred(*iter, *searchBeg))
+      ++iter;
+    _ForwardIterator2 piter;
+    while (iter != end) {
+      auto save_iter = iter;
+      piter = searchBeg;
+      while (piter != searchEnd && iter != end && pred(*iter, *piter)) {
+        ++iter;
+        ++piter;
+      }
+      if (piter == searchEnd)
+        return save_iter;
+      iter = ++save_iter;
+      while (iter != end && !pred(*iter, *searchBeg))
+        ++iter;
+    }
+    return iter;
+  }
+
   template <typename _ForwardIterator1, typename _ForwardIterator2>
   _ForwardIterator1 search(_ForwardIterator1 beg, _ForwardIterator1 end,
                            _ForwardIterator2 searchBeg, _ForwardIterator2 searchEnd) {
-    
+    typedef typename std::iterator_traits<_ForwardIterator1>::value_type value_type;
+    return study::search(beg, end, searchBeg, searchEnd, std::equal_to<value_type>());
   }
+
+  template <typename _InputIterator1, typename _InputIterator2, typename _BinaryPredicate>
+  std::pair<_InputIterator1, _InputIterator2>
+  mismatch(_InputIterator1 beg, _InputIterator1 end,
+           _InputIterator2 cmpBeg, _BinaryPredicate comp) {
+    std::pair<_InputIterator1, _InputIterator2> ret = std::make_pair(beg, cmpBeg);
+    while (ret.first != end && comp(*ret.first, *ret.second)) {
+      ++ret.first;
+      ++ret.second;
+    }
+    return ret;
+  }
+
+  template <typename _InputIterator1, typename _InputIterator2>
+  std::pair<_InputIterator1, _InputIterator2>
+  mismatch(_InputIterator1 beg, _InputIterator1 end, _InputIterator2 cmpBeg) {
+    typedef typename std::iterator_traits<_InputIterator1>::value_type value_type;
+    return study::mismatch(beg, end, cmpBeg, std::equal_to<value_type>());
+  }
+                                                       
 
 }
 

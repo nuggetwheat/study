@@ -31,4 +31,14 @@ Adjacency Matrix
 1. Constant time lookup to determine if edge (u,v) exists
 2. For unweighted graphs, they only need 1 bit per entry
 
+-------------
+
+Minimum Spanning Tree
+
+Edge {
+  src
+  dst
+  weight
+};
+
 

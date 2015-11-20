@@ -28,6 +28,10 @@ namespace {
   bool absLess(int elem1, int elem2) {
     return abs(elem1) < abs(elem2);
   }
+  bool checkEven(int elem, bool even) {
+    return (elem % 2 == 0) ? even : !even;
+  }
+
 }
 
 namespace study {
@@ -118,14 +122,61 @@ namespace study {
   }
 
   void test_search() {
-    std::deque<int> coll{ 1, 2, 7, 7, 6, 3, 9, 5, 7, 7, 7, 3, 6 };
-    auto pos = study::search_n(coll.begin(), coll.end(), 3, 7);
-    assert(std::distance(coll.begin(), pos) == 8);
-    pos = study::search_n(coll.begin(), coll.end(), 4, 0,
-                          [](int elem, int value) {
-                            return elem%2==1;
-                          });
-    assert(std::distance(coll.begin(), pos) == 5);
+    // search_n
+    {
+      std::deque<int> coll{ 1, 2, 7, 7, 6, 3, 9, 5, 7, 7, 7, 3, 6 };
+      auto pos = study::search_n(coll.begin(), coll.end(), 3, 7);
+      assert(std::distance(coll.begin(), pos) == 8);
+      pos = study::search_n(coll.begin(), coll.end(), 4, 0,
+                            [](int elem, int value) {
+                              return elem%2==1;
+                            });
+      assert(std::distance(coll.begin(), pos) == 5);
+    }
+    // search
+    {
+      std::deque<int> coll(14);
+      std::list<int> subcoll(4);
+      std::vector<int> result;
+      int val {};
+      std::generate(coll.begin(), coll.end(),
+                    [&val]() -> int { return (val++%7)+1; });
+      std::iota(subcoll.begin(), subcoll.end(), 3);
+      auto pos = study::search(coll.begin(), coll.end(), subcoll.begin(), subcoll.end());
+      while (pos != coll.end()) {
+        result.push_back(std::distance(coll.begin(), pos));
+        pos = study::search(++pos, coll.end(), subcoll.begin(), subcoll.end());
+      }
+      assert(result.size() == 2);
+      assert(result[0] == 2);
+      assert(result[1] == 9);
+
+      std::vector<int> coll2(9);
+      std::iota(coll2.begin(), coll2.end(), 1);
+      result.clear();
+      bool checkEvenArgs[3] = { true, false, true };
+      auto pos2 = study::search(coll2.begin(), coll2.end(), checkEvenArgs, checkEvenArgs+3, checkEven);
+      while (pos2 != coll2.end()) {
+        result.push_back(std::distance(coll2.begin(), pos2));
+        pos2 = study::search(++pos2, coll2.end(), checkEvenArgs, checkEvenArgs+3, checkEven);
+      }
+      assert(result.size() == 3);
+      assert(result[0] == 1);
+      assert(result[1] == 3);
+      assert(result[2] == 5);
+    }
+
+    // mismatch
+    {
+      std::vector<int> coll1 = { 1, 2, 3, 4, 5, 6 };
+      std::list<int> coll2 = { 1, 2, 4, 8, 16, 3 };
+      auto values = study::mismatch(coll1.begin(), coll1.end(),
+                                    coll2.begin());
+      assert(*values.first == 3 && *values.second == 4);
+      values = study::mismatch(coll1.begin(), coll1.end(),
+                               coll2.begin(), std::less_equal<int>());
+      assert(*values.first == 6 && *values.second == 3);
+    }
   }
 
 }
