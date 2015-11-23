@@ -20,8 +20,8 @@ namespace {
     'r', 's', 't', 'u', 'v', 'w', 'x', 'y'
       };
   const vector<study::Edge<char>> test_bfs_edges {
-    {'r', 's', 1}, {'r', 'v', 1}, {'s', 'w', 1}, {'t', 'u', 1}, {'u', 'y', 1},
-    {'w', 't', 1}, {'w', 'x', 1}, {'x', 't', 1}, {'x', 'u', 1}, {'x', 'y', 1}
+    {'r', 's'}, {'r', 'v'}, {'s', 'w'}, {'t', 'u'}, {'u', 'y'},
+    {'w', 't'}, {'w', 'x'}, {'x', 't'}, {'x', 'u'}, {'x', 'y'}
   };
   const map<char,char> test_bfs_expected_parent {
     { 'r', 's' }, { 's', (char)0 }, { 't', 'w' }, { 'u', 't' }, { 'v', 'r' },
@@ -30,8 +30,8 @@ namespace {
   // DFS
   constexpr initializer_list<char> test_dfs_nodes { 'u', 'v', 'w', 'x', 'y', 'z' };
   const vector<study::Edge<char>> test_dfs_edges {
-    {'u', 'v', 1}, {'u', 'x', 1}, {'x', 'v', 1}, {'v', 'y', 1},
-    {'y', 'x', 1}, {'w', 'y', 1}, {'w', 'z', 1}, {'z', 'z', 1}
+    {'u', 'v'}, {'u', 'x'}, {'x', 'v'}, {'v', 'y'},
+    {'y', 'x'}, {'w', 'y'}, {'w', 'z'}, {'z', 'z'}
   };
   const map<char,char> test_dfs_expected_parent {
     { 'u', (char)0 }, { 'v', 'u' }, { 'y', 'v' }, { 'x', 'y' },
@@ -74,6 +74,36 @@ namespace {
     " f g",
     " h",
     (const char *)0
+  };
+  // MST
+  constexpr initializer_list<char> test_mst_nodes{ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' };
+  const vector<study::Edge<char>> test_mst_edges {
+    {'a', 'b'}, {'a', 'h'}, {'b', 'c'}, {'c', 'd'}, {'d', 'e'}, {'e', 'f'},
+    {'f', 'c'}, {'f', 'd'}, {'f', 'g'}, {'g', 'h'}, {'g', 'i'}, {'h', 'b'},
+    {'h', 'i'}, {'i', 'c'}
+  };
+  const int test_mst_weight[14] = { 4, 8, 8, 7, 9, 10, 4, 14, 2, 1, 6, 11, 7, 2 };
+  // MST-Kruskal
+  const vector<study::Edge<char>> test_mst_kruskal_edges_expected {
+    {'a', 'b'},
+    {'a', 'h'},
+    {'c', 'd'},
+    {'d', 'e'},
+    {'f', 'c'},
+    {'f', 'g'},
+    {'g', 'h'},
+    {'i', 'c'}
+  };
+  // MST-Prim
+  const vector<study::Edge<char>> test_mst_prim_edges_expected {
+    {'a', 'b'},
+    {'b', 'c'},
+    {'c', 'd'},
+    {'c', 'f'},
+    {'c', 'i'},
+    {'d', 'e'},
+    {'f', 'g'},
+    {'g', 'h'}
   };
   
 }
@@ -137,6 +167,42 @@ namespace study {
           ss << " " << elem;
         assert(ss.str() == test_scc_groups[i]);
       }
+    }
+
+    // MST-Kruskal
+    {
+      Graph<char> g { EdgeType::UNDIRECTED, test_mst_nodes };
+      Graph<char> mst;
+      g.add_edges(test_mst_edges);
+      map<Edge<char>, int> weight;
+      for (size_t i=0; i<14; ++i) {
+        Edge<char> edge = test_mst_edges[i];
+        weight[edge] = test_mst_weight[i];
+        edge.reverse();
+        weight[edge] = test_mst_weight[i];
+      }
+      mst_kruskal(g, weight, mst);
+      auto edges = mst.edges();
+      sort(edges.begin(), edges.end());
+      assert(edges == test_mst_kruskal_edges_expected);
+    }
+
+    // MST-Prim
+    {
+      Graph<char> g { EdgeType::UNDIRECTED, test_mst_nodes };
+      Graph<char> mst;
+      g.add_edges(test_mst_edges);
+      map<Edge<char>, int> weight;
+      for (size_t i=0; i<14; ++i) {
+        Edge<char> edge = test_mst_edges[i];
+        weight[edge] = test_mst_weight[i];
+        edge.reverse();
+        weight[edge] = test_mst_weight[i];
+      }
+      mst_prim(g, 'a', weight, mst);
+      auto edges = mst.edges();
+      sort(edges.begin(), edges.end());
+      assert(edges == test_mst_prim_edges_expected);
     }
   }
 

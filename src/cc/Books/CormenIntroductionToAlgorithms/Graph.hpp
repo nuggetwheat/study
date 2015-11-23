@@ -6,6 +6,7 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include <ostream>
 #include <set>
 #include <utility>
 #include <vector>
@@ -14,46 +15,72 @@ namespace study {
 
   enum class EdgeType { UNDIRECTED, DIRECTED };
 
-  template <typename T, typename WT = int>
+  //template <typename T> using Edge = std::pair<T, T>;
+
+  template <typename T>
   struct Edge {
     T src;
     T dst;
-    WT weight;
+    void reverse() { std::swap(src, dst); }
   };
 
-  template <typename T, typename WT = int>
+  template <typename T>
+  std::ostream &operator<<(std::ostream &os, const Edge<T> &e) {
+    return os << e.src << " - " << e.dst;
+  }
+
+  template <typename T>
+  bool operator<(const Edge<T> &lhs, const Edge<T> &rhs) {
+    if (lhs.src == rhs.src)
+      return lhs.dst < rhs.dst;
+    return lhs.src < rhs.src;
+  }
+
+  template <typename T>
+  bool operator==(const Edge<T> &lhs, const Edge<T> &rhs) {
+    return lhs.src == rhs.src && lhs.dst == rhs.dst;
+  }
+
+  template <typename T>
   class Graph {
   public:
+    Graph() { }
     Graph(EdgeType et, std::initializer_list<T> init);
-    void add_edge(const T &u, const T &v);
-    void add_edge(const Edge<T, WT> &e);
-    void add_edges(const std::vector<Edge<T, WT>> &edges);
-    void remove_edges();
-    std::list<T> &adj(T u);
-    std::set<T> &vertices() { return vertices_; };
-    std::vector<std::pair<T, T>> edges();
+    void add_edge(const Edge<T> &e);
+    void add_edges(const std::vector<Edge<T>> &edges);
+    void clear_edges();
+    const std::list<T> &adj(T u) const;
+    const std::set<T> &vertices() const { return vertices_; };
+    const std::vector<Edge<T>> &edges() const { return edges_; };
     EdgeType edge_type() { return et_; }
     void print();
   private:
     std::set<T> vertices_;
+    std::vector<Edge<T>> edges_;
     std::map<T, std::list<T>> alists_;
     EdgeType et_ {};
   };
 
-  template <typename T, typename WT>
-  Graph<T, WT> transpose(Graph<T, WT> &g);
+  template <typename T>
+  Graph<T> transpose(Graph<T> &g);
+
+  template <typename T>
+  void bfs(Graph<T> &g, T root, std::map<T, T> &parents, std::map<T, int> &distance);
+
+  template <typename T>
+  void dfs(Graph<T> &g, std::map<T, T> &parent, std::map<T, std::pair<int,int>> &time);
+
+  template <typename T>
+  void topological_sort(Graph<T> &g, std::list<T> &order);
+
+  template <typename T>
+  void strongly_connected_components(Graph<T> &g, std::vector<std::set<T>> &components);
 
   template <typename T, typename WT>
-  void bfs(Graph<T, WT> &g, T root, std::map<T, T> &parents, std::map<T, int> &distance);
+  void mst_kruskal(const Graph<T> &g, std::map<Edge<T>, WT> &weight, Graph<T> &mst);
 
   template <typename T, typename WT>
-  void dfs(Graph<T, WT> &g, std::map<T, T> &parent, std::map<T, std::pair<int,int>> &time);
-
-  template <typename T, typename WT>
-  void topological_sort(Graph<T, WT> &g, std::list<T> &order);
-
-  template <typename T, typename WT>
-  void strongly_connected_components(Graph<T, WT> &g, std::vector<std::set<T>> &components);
+  void mst_prim(const Graph<T> &g, T root, std::map<Edge<T>, WT> &weight, Graph<T> &mst);
 
 }
 
