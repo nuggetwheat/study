@@ -1,15 +1,21 @@
 
 #include "algorithm.hpp"
 
+#include <algorithm>
 #include <cassert>
+#include <chrono> 
 #include <cstdlib>
 #include <deque>
-#include <algorithm>
+#include <forward_list>
 #include <functional>
 #include <iostream>
 #include <list>
+#include <random>
 #include <sstream>
 #include <vector>
+
+using std::cout;
+using std::endl;
 
 namespace {
   class MeanValue {
@@ -177,6 +183,42 @@ namespace study {
                                coll2.begin(), std::less_equal<int>());
       assert(*values.first == 6 && *values.second == 3);
     }
+
+    // partition
+    {
+      std::forward_list<int> flc(50);
+      unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+      std::default_random_engine dre(seed);
+      auto r = std::bind(std::uniform_int_distribution<int>(0, 49), dre);
+
+      for (size_t i=0; i<100; ++i) {
+        std::generate(flc.begin(), flc.end(), r);
+        auto piter = study::partition(flc.begin(), flc.end(),
+                                      [](int elem) { return elem < 25; });
+        for (auto iter = flc.begin(); iter != piter; ++iter)
+          assert(*iter < 25);
+        for (auto iter = piter; iter != flc.end(); ++iter)
+          assert(*iter >= 25);
+      }
+
+      std::vector<int> vec(50);
+      std::iota(vec.begin(), vec.end(), 1);
+
+      for (size_t i=0; i<100; ++i) {
+        std::shuffle(vec.begin(), vec.end(), dre);
+        auto piter = study::partition(vec.begin(), vec.end(), [](int elem) { return elem < 25; });
+        for (auto iter = vec.begin(); iter != piter; ++iter)
+          assert(*iter < 25);
+        for (auto iter = piter; iter != vec.end(); ++iter)
+          assert(*iter >= 25);
+      }
+    }
+
+    // permutation
+    {
+      
+    }
+
   }
 
 }

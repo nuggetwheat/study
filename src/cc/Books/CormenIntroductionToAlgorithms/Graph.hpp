@@ -65,7 +65,7 @@ namespace study {
   Graph<T> transpose(Graph<T> &g);
 
   template <typename T>
-  void bfs(Graph<T> &g, T root, std::map<T, T> &parents, std::map<T, int> &distance);
+  void bfs(Graph<T> &g, T root, std::map<T, T> &parent, std::map<T, int> &distance);
 
   template <typename T>
   void dfs(Graph<T> &g, std::map<T, T> &parent, std::map<T, std::pair<int,int>> &time);
@@ -81,6 +81,21 @@ namespace study {
 
   template <typename T, typename WT>
   void mst_prim(const Graph<T> &g, T root, std::map<Edge<T>, WT> &weight, Graph<T> &mst);
+
+  template <typename T, typename DT>
+  void relax(T u, T v, std::map<Edge<T>, DT> &weight, std::map<T, T> &parent, std::map<T, DT> &distance);
+
+  template <typename T, typename DT>
+  void initialize_single_source(Graph<T> &g, T root, std::map<T, T> &parent, std::map<T, DT> &distance);
+
+  template <typename T, typename DT>
+  bool bellman_ford(Graph<T> &g, T root, std::map<Edge<T>, DT> &weight,
+                    std::map<T, T> &parent, std::map<T, DT> &distance);
+
+  template <typename T, typename DT>
+  void dag_shortest_paths(Graph<T> &g, T root, std::map<Edge<T>, DT> &weight,
+                          std::map<T, T> &parent, std::map<T, DT> &distance);
+
 
 }
 

@@ -213,6 +213,81 @@ namespace study {
     typedef typename std::iterator_traits<_InputIterator1>::value_type value_type;
     return study::mismatch(beg, end, cmpBeg, std::equal_to<value_type>());
   }
+
+  template <typename _ForwardIterator, typename _UnaryPredicate>
+  _ForwardIterator partition(_ForwardIterator beg, _ForwardIterator end,
+                             _UnaryPredicate op, std::forward_iterator_tag) {
+    while (beg != end && op(*beg))
+      ++beg;
+    auto iter = beg;
+    while (iter != end && !op(*iter))
+      ++iter;
+    while (iter != end) {
+      std::swap(*beg++, *iter++);
+      while (op(*beg))
+        ++beg;
+      while (iter != end && !op(*iter))
+        ++iter;
+    }
+    return beg;
+  }
+
+  template <typename _BidirectionalIterator, typename _UnaryPredicate>
+  _BidirectionalIterator partition(_BidirectionalIterator beg, _BidirectionalIterator end,
+                                   _UnaryPredicate op, std::bidirectional_iterator_tag) {
+    while (beg < end && op(*beg))
+      ++beg;
+    if (beg != end) {
+      --end;
+      while (beg < end && !op(*end))
+        --end;
+      while (beg < end) {
+        std::swap(*beg++, *end++);
+        while (beg < end && op(*beg))
+          ++beg;
+        while (beg < end && !op(*end))
+          --end;
+      }
+    }
+    return beg;
+  }
+
+
+  template <typename _ForwardIterator, typename _UnaryPredicate>
+  _ForwardIterator partition(_ForwardIterator beg, _ForwardIterator end,
+                             _UnaryPredicate op) {
+    return partition(beg, end, op, typename std::iterator_traits<_ForwardIterator>::iterator_category());
+  }
+
+  template <typename _BidirectionalIterator>
+  bool next_permutation(_BidirectionalIterator beg, _BidirectionalIterator end) {
+    // implement me!!
+    //return std::next_permutation(beg, end);
+    return true;
+  }
+
+  template <typename _BidirectionalIterator, typename _BinaryPredicate>
+  bool next_permutation(_BidirectionalIterator beg, _BidirectionalIterator end,
+                        _BinaryPredicate op) {
+    // implement me!!
+    //return std::next_permutation(beg, end, op);
+    return true;
+  }
+
+  template <typename _BidirectionalIterator>
+  bool prev_permutation(_BidirectionalIterator beg, _BidirectionalIterator end) {
+    // implement me!!
+    //return std::prev_permutation(beg, end);
+    return true;
+  }
+
+  template <typename _BidirectionalIterator, typename _BinaryPredicate>
+  bool prev_permutation(_BidirectionalIterator beg, _BidirectionalIterator end,
+                        _BinaryPredicate op) {
+    // implement me!!
+    //return std::prev_permutation(beg, end, op);
+    return true;
+  }
                                                        
 
 }

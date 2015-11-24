@@ -77,10 +77,10 @@ namespace study {
   enum class VertexColor { WHITE, GRAY, BLACK };
   
   template <typename T>
-  void bfs(Graph<T> &g, T root, std::map<T, T> &parents, std::map<T, int> &distance) {
+  void bfs(Graph<T> &g, T root, std::map<T, T> &parent, std::map<T, int> &distance) {
     std::map<T, VertexColor> color;
     for (auto vertex : g.vertices()) {
-      parents[vertex] = (char)0;
+      parent[vertex] = (char)0;
       distance[vertex] = 0;
       color[vertex] = VertexColor::WHITE;
     }
@@ -97,7 +97,7 @@ namespace study {
           color_iter->second = VertexColor::GRAY;
           auto distance_iter = distance.find(neighbor);
           distance_iter->second = distance[vertex] + 1;
-          parents[neighbor] = vertex;
+          parent[neighbor] = vertex;
           needs_visiting.push(neighbor);
         }
       }
@@ -276,6 +276,50 @@ namespace study {
       qheap.resize(qheap.size()-1);
     }
   }
+
+  template <typename T, typename DT>
+  void relax(T u, T v, std::map<Edge<T>, DT> &weight, std::map<T, T> &parent, std::map<T, DT> &distance) {
+    if (distance[u] != std::numeric_limits<DT>::max() &&
+        distance[v] > distance[u] + weight[{u,v}]) {
+      distance[v] = distance[u] + weight[{u,v}];
+      parent[v] = u;
+    }
+  }
+
+  template <typename T, typename DT>
+  void initialize_single_source(Graph<T> &g, T root, std::map<T, T> &parent, std::map<T, DT> &distance) {
+    for (auto vertex : g.vertices()) {
+      distance[vertex] = std::numeric_limits<DT>::max();
+      parent[vertex] = (T)0;
+    }
+    distance[root] = (DT)0;
+  }
+
+  template <typename T, typename DT>
+  bool bellman_ford(Graph<T> &g, T root, std::map<Edge<T>, DT> &weight,
+                    std::map<T, T> &parent, std::map<T, DT> &distance) {
+    initialize_single_source(g, root, parent, distance);
+    for (size_t i=0; i<g.vertices().size()-1; ++i)
+      for (const auto &edge : g.edges())
+        relax(edge.src, edge.dst, weight, parent, distance);
+    for (const auto &edge : g.edges())
+      if (distance[edge.src] != std::numeric_limits<DT>::max() &&
+          distance[edge.dst] > distance[edge.src] + weight[edge])
+        return false;
+    return true;
+  }
+
+  template <typename T, typename DT>
+  void dag_shortest_paths(Graph<T> &g, T root, std::map<Edge<T>, DT> &weight,
+                          std::map<T, T> &parent, std::map<T, DT> &distance) {
+    std::list<T> topo_order;
+    topological_sort(g, topo_order);
+    initialize_single_source(g, root, parent, distance);
+    for (auto vertex : topo_order)
+      for (auto neighbor : g.adj(vertex))
+        relax(vertex, neighbor, weight, parent, distance);
+  }
+
 
 }
 

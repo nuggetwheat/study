@@ -105,7 +105,42 @@ namespace {
     {'f', 'g'},
     {'g', 'h'}
   };
-  
+  // SSSP
+  constexpr initializer_list<char> test_sssp_nodes{ 's', 't', 'x', 'y', 'z' };
+  // Bellman-Ford
+  const vector<study::Edge<char>> test_bellman_ford_edges {
+    {'s', 't'},
+    {'s', 'y'},
+    {'t', 'x'},
+    {'t', 'y'},
+    {'t', 'z'},
+    {'x', 't'},
+    {'y', 'x'},
+    {'y', 'z'},
+    {'z', 's'},
+    {'z', 'x'}
+  };
+  const int test_bellman_ford_weight[10] = { 6, 7, 5, 8, -4, -2, -3, 9, 2, 7 };
+  const vector<char> test_bellman_ford_parent_expected { (char)0, 'x', 'y', 's', 't' };
+  const vector<int> test_bellman_ford_distance_expected { 0, 2, 4, 7, -2 };
+  // DAG Shortest Paths
+  constexpr initializer_list<char> test_dag_sp_nodes{ 'r', 's', 't', 'x', 'y', 'z' };  
+  const vector<study::Edge<char>> test_dag_sp_edges {
+    {'r', 's'},
+    {'r', 't'},
+    {'s', 't'},
+    {'s', 'x'},
+    {'t', 'x'},
+    {'t', 'y'},
+    {'t', 'z'},
+    {'x', 'y'},
+    {'x', 'z'},
+    {'y', 'z'}
+  };
+  const int test_dag_sp_weight[10] = { 5, 3, 2, 6, 7, 4, 2, -1, 1, -2 };
+  const vector<char> test_dag_sp_parent_expected { (char)0, (char)0, 's', 's', 'x', 'y' };
+  const vector<int> test_dag_sp_distance_expected { numeric_limits<int>::max(), 0, 2, 6, 5, 3 };
+
 }
 
 
@@ -204,6 +239,59 @@ namespace study {
       sort(edges.begin(), edges.end());
       assert(edges == test_mst_prim_edges_expected);
     }
-  }
 
+    // Bellman-Ford
+    {
+      Graph<char> g { EdgeType::DIRECTED, test_sssp_nodes };
+      std::map<char, char> parent;
+      std::map<char, int> distance;
+      g.add_edges(test_bellman_ford_edges);
+      map<Edge<char>, int> weight;
+      for (size_t i=0; i<10; ++i)
+        weight[test_bellman_ford_edges[i]] = test_bellman_ford_weight[i];
+      auto valid = bellman_ford(g, 's', weight, parent, distance);
+      assert(valid);
+
+      assert (std::search(parent.begin(), parent.end(),
+                          test_bellman_ford_parent_expected.begin(),
+                          test_bellman_ford_parent_expected.end(),
+                          [](std::pair<char, char> lhs, char rhs) {
+                            return lhs.second == rhs;
+                          }) == parent.begin());
+
+      assert (std::search(distance.begin(), distance.end(),
+                          test_bellman_ford_distance_expected.begin(),
+                          test_bellman_ford_distance_expected.end(),
+                          [](std::pair<char, int> lhs, int rhs) {
+                            return lhs.second == rhs;
+                          }) == distance.begin());
+    }
+
+    // DAG Shortest Paths
+    {
+      Graph<char> g { EdgeType::DIRECTED, test_dag_sp_nodes };
+      std::map<char, char> parent;
+      std::map<char, int> distance;
+      g.add_edges(test_dag_sp_edges);
+      map<Edge<char>, int> weight;
+      for (size_t i=0; i<10; ++i)
+        weight[test_dag_sp_edges[i]] = test_dag_sp_weight[i];
+      dag_shortest_paths(g, 's', weight, parent, distance);
+
+      assert (std::search(parent.begin(), parent.end(),
+                          test_dag_sp_parent_expected.begin(),
+                          test_dag_sp_parent_expected.end(),
+                          [](std::pair<char, char> lhs, char rhs) {
+                            return lhs.second == rhs;
+                          }) == parent.begin());
+
+      assert (std::search(distance.begin(), distance.end(),
+                          test_dag_sp_distance_expected.begin(),
+                          test_dag_sp_distance_expected.end(),
+                          [](std::pair<char, int> lhs, int rhs) {
+                            return lhs.second == rhs;
+                          }) == distance.begin());
+    }
+
+  }
 }
