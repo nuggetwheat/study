@@ -16,7 +16,7 @@ using namespace std;
 
 namespace {
   // BFS
-  constexpr initializer_list<char> test_bfs_nodes {
+  const initializer_list<char> test_bfs_nodes {
     'r', 's', 't', 'u', 'v', 'w', 'x', 'y'
       };
   const vector<study::Edge<char>> test_bfs_edges {
@@ -28,7 +28,7 @@ namespace {
     { 'w', 's' }, { 'x', 'w' }, { 'y', 'x' }
   };
   // DFS
-  constexpr initializer_list<char> test_dfs_nodes { 'u', 'v', 'w', 'x', 'y', 'z' };
+  const initializer_list<char> test_dfs_nodes { 'u', 'v', 'w', 'x', 'y', 'z' };
   const vector<study::Edge<char>> test_dfs_edges {
     {'u', 'v'}, {'u', 'x'}, {'x', 'v'}, {'v', 'y'},
     {'y', 'x'}, {'w', 'y'}, {'w', 'z'}, {'z', 'z'}
@@ -51,7 +51,7 @@ namespace {
     {"socks", "shoes"}
   };
   // SCC
-  constexpr initializer_list<char> test_scc_nodes{ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
+  const initializer_list<char> test_scc_nodes{ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
   const vector<study::Edge<char>> test_scc_edges {
     {'a', 'b'},
     {'b', 'c'},
@@ -76,7 +76,7 @@ namespace {
     (const char *)0
   };
   // MST
-  constexpr initializer_list<char> test_mst_nodes{ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' };
+  const initializer_list<char> test_mst_nodes{ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' };
   const vector<study::Edge<char>> test_mst_edges {
     {'a', 'b'}, {'a', 'h'}, {'b', 'c'}, {'c', 'd'}, {'d', 'e'}, {'e', 'f'},
     {'f', 'c'}, {'f', 'd'}, {'f', 'g'}, {'g', 'h'}, {'g', 'i'}, {'h', 'b'},
@@ -106,7 +106,7 @@ namespace {
     {'g', 'h'}
   };
   // SSSP
-  constexpr initializer_list<char> test_sssp_nodes{ 's', 't', 'x', 'y', 'z' };
+  const initializer_list<char> test_sssp_nodes{ 's', 't', 'x', 'y', 'z' };
   // Bellman-Ford
   const vector<study::Edge<char>> test_bellman_ford_edges {
     {'s', 't'},
@@ -124,7 +124,7 @@ namespace {
   const vector<char> test_bellman_ford_parent_expected { (char)0, 'x', 'y', 's', 't' };
   const vector<int> test_bellman_ford_distance_expected { 0, 2, 4, 7, -2 };
   // DAG Shortest Paths
-  constexpr initializer_list<char> test_dag_sp_nodes{ 'r', 's', 't', 'x', 'y', 'z' };  
+  const initializer_list<char> test_dag_sp_nodes{ 'r', 's', 't', 'x', 'y', 'z' };  
   const vector<study::Edge<char>> test_dag_sp_edges {
     {'r', 's'},
     {'r', 't'},
