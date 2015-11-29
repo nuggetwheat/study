@@ -47,6 +47,18 @@ namespace study {
   void dag_shortest_paths(Graph<T> &g, T root, std::map<Edge<T>, DT> &weight,
                           std::map<T, T> &parent, std::map<T, DT> &distance);
 
+  template <size_t N>
+  void display(int M[N][N]);
+
+  template <size_t N>
+  void extend_shortest_paths(int L[N][N], int W[N][N], int output[N][N]);
+
+  template <size_t N>
+  void slow_all_pairs_shortest_paths(int W[N][N], int output[N][N]);
+
+  template <size_t N>
+  void faster_all_pairs_shortest_paths(int W[N][N], int output[N][N]);
+
 
 }
 

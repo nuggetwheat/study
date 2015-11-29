@@ -140,6 +140,22 @@ namespace {
   const int test_dag_sp_weight[10] = { 5, 3, 2, 6, 7, 4, 2, -1, 1, -2 };
   const vector<char> test_dag_sp_parent_expected { (char)0, (char)0, 's', 's', 'x', 'y' };
   const vector<int> test_dag_sp_distance_expected { numeric_limits<int>::max(), 0, 2, 6, 5, 3 };
+  // All Pairs Shortest Paths
+  constexpr const int INF = numeric_limits<int>::max();
+  int apsp_weight[5][5] = {
+    { 0, 3, 8, INF, -4 },
+    { INF, 0, INF, 1, 7 },
+    { INF, 4, 0, INF, INF },
+    { 2, INF, -5, 0, INF },
+    { INF, INF, INF, 6, 0 }
+  };
+  const int apsp_expected[5][5] = {
+    {0, 1, -3, 2, -4},
+    {3, 0, -4, 1, -1},
+    {7, 4, 0, 5, 3},
+    {2, -1, -5,  0, -2},
+    {8, 5, 1, 6, 0}
+  };
 
 }
 
@@ -291,6 +307,24 @@ namespace study {
                           [](std::pair<char, int> lhs, int rhs) {
                             return lhs.second == rhs;
                           }) == distance.begin());
+    }
+
+    // All Pairs Shortest Paths (V^4)
+    {
+      int sp[5][5];
+      slow_all_pairs_shortest_paths<5>(apsp_weight, sp);
+      for (size_t i=0; i<5; ++i)
+        for (size_t j=0; j<5; ++j)
+          assert(sp[i][j] == apsp_expected[i][j]);
+    }
+
+    // All Pairs Shortest Paths (V^3logV)
+    {
+      int sp[5][5];
+      faster_all_pairs_shortest_paths<5>(apsp_weight, sp);
+      for (size_t i=0; i<5; ++i)
+        for (size_t j=0; j<5; ++j)
+          assert(sp[i][j] == apsp_expected[i][j]);
     }
 
   }

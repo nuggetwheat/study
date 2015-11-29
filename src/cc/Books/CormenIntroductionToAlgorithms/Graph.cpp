@@ -2,7 +2,10 @@
 #ifndef Books_CormenIntroductionToAlgorithms_Graph_cpp
 #define Books_CormenIntroductionToAlgorithms_Graph_cpp
 
+#include <algorithm>
 #include <cassert>
+#include <cstring>
+#include <iomanip>
 #include <iostream>
 #include <memory>
 #include <queue>
@@ -256,6 +259,83 @@ namespace study {
         relax(vertex, neighbor, weight, parent, distance);
   }
 
+  template <size_t N>
+  void display(int M[N][N]) {
+    for (size_t i=0; i<N; ++i) {
+      std::cout << i << ":";
+      for (size_t j=0; j<N; ++j) {
+        if (M[i][j] == std::numeric_limits<int>::max())
+          std::cout << "  \u221E";
+        else
+          std::cout << " " << std::setw(2) << M[i][j];
+      }
+      std::cout << "\n";
+    }
+    std::cout << std::endl;
+  }
+
+  template <size_t N>
+  void extend_shortest_paths(int L[N][N], int W[N][N], int output[N][N]) {
+    for (size_t i=0; i<N; ++i) {
+      for (size_t j=0; j<N; ++j) {
+        output[i][j] = std::numeric_limits<int>::max();
+        for (size_t k=0; k<N; ++k) {
+          if (L[i][k] != std::numeric_limits<int>::max() &&
+              W[k][j] != std::numeric_limits<int>::max())
+            output[i][j] = std::min(output[i][j], L[i][k] + W[k][j]);
+        }
+      }
+    }
+  }
+
+  template <size_t N>
+  void slow_all_pairs_shortest_paths(int W[N][N], int output[N][N]) {
+    int a[N][N];
+    int b[N][N];
+    int (*before)[N][N] = &a;
+    int (*after)[N][N] = &b;
+
+    //memcpy(before, &W, sizeof(W));
+    for (size_t i=0; i<N; ++i)
+      for (size_t j=0; j<N; ++j)
+        a[i][j] = W[i][j];
+
+    //display(*before);
+    for (size_t m=1; m<N-1; ++m) {
+      extend_shortest_paths<N>(*before, W, *after);
+      //display(*after);
+      std::swap(before, after);
+    }
+    //memcpy(&output, before, sizeof(output));
+    for (size_t i=0; i<N; ++i)
+      for (size_t j=0; j<N; ++j)
+        output[i][j] = (*before)[i][j];
+  }
+
+  template <size_t N>
+  void faster_all_pairs_shortest_paths(int W[N][N], int output[N][N]) {
+    int a[N][N];
+    int b[N][N];
+    int (*before)[N][N] = &a;
+    int (*after)[N][N] = &b;
+
+    //memcpy(before, &W, sizeof(W));
+    for (size_t i=0; i<N; ++i)
+      for (size_t j=0; j<N; ++j)
+        a[i][j] = W[i][j];
+
+    //display(*before);
+    for (size_t m=1; m<N-1; m*=2) {
+      extend_shortest_paths<N>(*before, *before, *after);
+      //display(*after);
+      std::swap(before, after);
+    }
+
+    //memcpy(&output, before, sizeof(output));
+    for (size_t i=0; i<N; ++i)
+      for (size_t j=0; j<N; ++j)
+        output[i][j] = (*before)[i][j];
+  }
 
 }
 
