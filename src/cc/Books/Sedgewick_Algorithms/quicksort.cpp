@@ -1,4 +1,75 @@
 
+#include <algorithm>
+#include <iterator>
+
+namespace study {
+
+  template <typename ForwardIterator, typename UnaryPredicate>
+  ForwardIterator partition(ForwardIterator beg, ForwardIterator end, UnaryPredicate pred) {
+    while (beg != end && pred(*beg))
+      ++beg;
+    auto iter = beg;
+    while (iter < end && !pred(*iter))
+      ++iter;
+    while (iter != end) {
+      std::swap(*iter++, *beg++);
+      while (beg != end && pred(*beg))
+        ++beg;
+      while (iter < end && !pred(*iter))
+        ++iter;
+    }
+    return beg;
+  }
+
+  template <typename RandomAccessIterator>
+  RandomAccessIterator qs_partition(RandomAccessIterator beg, RandomAccessIterator end) {
+    auto iter = --end;
+    // swap partition value into *iter
+    if (beg < iter) {
+      auto pv = *iter--;
+      while (*beg < pv)
+        ++beg;
+      while (iter > beg && *iter > pv)
+        --iter;
+      while (beg < iter) {
+        std::swap(*beg++, *iter--);
+        while (*beg < pv)
+          ++beg;
+        while (iter > beg && *iter > pv)
+          --iter;
+      }
+      if (beg != end)
+        std::swap(*beg++, *end);
+    }
+    return beg;
+  }
+  
+
+  template <typename RandomAccessIterator>
+  void quicksort(RandomAccessIterator beg, RandomAccessIterator end) {
+    if (beg < end-1) {
+      auto iter = study::qs_partition(beg, end);
+      quicksort(beg, iter);
+      quicksort(iter, end);
+    }
+  }
+
+  template <typename RandomAccessIterator>
+  void nth_element(RandomAccessIterator beg, RandomAccessIterator nth, RandomAccessIterator end) {
+    if (beg < end-1) {
+      auto iter = qs_partition(beg, end);
+      if (nth < iter)
+        study::nth_element(beg, nth, iter);
+      else
+        study::nth_element(iter, nth, end);
+    }
+  }
+
+
+}
+
+#if 0
+
 #undef NDEBUG
 
 #include <cassert>
@@ -97,3 +168,4 @@ int main(int argc, char **argv) {
 
   return 0;
 }
+#endif

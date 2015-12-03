@@ -3,21 +3,25 @@
 
 using namespace std;
 
+namespace study {
 
-int gcd(int u, int v) {
-  do {
-    if (u < v) {
-      int t = u;
-      u = v;
-      v = t;
-    }
-    //u = u - v;
-    u %= v;
-    cout << "u = " << u << endl;
-  } while (u != 0);
-  return v;
+  int gcd(int u, int v) {
+    do {
+      if (u < v) {
+        int t = u;
+        u = v;
+        v = t;
+      }
+      //u = u - v;
+      u %= v;
+      cout << "u = " << u << endl;
+    } while (u != 0);
+    return v;
+  }
+
 }
 
+#if 0
 int gcd(int t, int u, int v) {
   return gcd(gcd(v,u), t);
 }
@@ -33,3 +37,4 @@ int main(int argc, char **argv) {
   int result = gcd(t, u, v);
   cout << "Greatest common divisor of (" << t << "," << u << "," << v << ") is " << result << endl;
 }
+#endif

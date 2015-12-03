@@ -1,4 +1,114 @@
 
+#include <queue>
+#include <stack>
+
+namespace study {
+
+  template <typename T>
+  void levelorder_traversal(Node<T> *node, std::vector<T> &output) {
+    if (node) {
+      std::queue<Node<T> *> node_queue;
+      node_queue.push(node);
+      while (!node_queue.empty()) {
+        node = node_queue.front();
+        node_queue.pop();
+        output.push_back( node->label() );
+        if (node->left)
+          node_queue.push(node->left);
+        if (node->right)
+          node_queue.push(node->right);
+      }
+    }
+  }
+
+  template <typename T>
+  void preorder_traversal(Node<T> *node, std::vector<T> &output) {
+    if (node) {
+      output.push_back(node->label());
+      preorder_traversal(node->left, output);
+      preorder_traversal(node->right, output);
+    }
+  }
+
+  template <typename T>
+  void inorder_traversal(Node<T> *node, std::vector<T> &output) {
+    if (node) {
+      inorder_traversal(node->left, output);
+      output.push_back(node->label());
+      inorder_traversal(node->right, output);
+    }
+  }
+
+  template <typename T>
+  void postorder_traversal(Node<T> *node, std::vector<T> &output) {
+    if (node) {
+      postorder_traversal(node->left, output);
+      postorder_traversal(node->right, output);
+      output.push_back(node->label());
+    }
+  }
+
+  template <typename T>
+  void preorder_traversal_nonrecursive(Node<T> *node, std::vector<T> &output) {
+    if (node) {
+      std::stack<Node<T> *> node_stack;
+      node_stack.push(node);
+      while (!node_stack.empty()) {
+        node = node_stack.top();
+        node_stack.pop();
+        output.push_back(node->label());
+        if (node->right)
+          node_stack.push(node->right);
+        if (node->left)
+          node_stack.push(node->left);
+      }
+    }
+  }
+
+  template <typename T>
+  void inorder_traversal_nonrecursive(Node<T> *node, std::vector<T> &output) {
+    std::stack<Node<T> *> node_stack;
+    while (node) {
+      while (node) {
+        node_stack.push(node);
+        node = node->left;
+      }
+      while (node == nullptr && !node_stack.empty()) {
+        node = node_stack.top();
+        node_stack.pop();
+        output.push_back(node->label());
+        node = node->right;
+      }
+    }
+  }
+
+  template <typename T>
+  void postorder_traversal_nonrecursive(Node<T> *node, std::vector<T> &output) {
+    if (node) {
+      std::stack<Node<T> *> first_stack;
+      std::stack<Node<T> *> second_stack;
+      first_stack.push(node);
+      while (!first_stack.empty()) {
+        node = first_stack.top();
+        first_stack.pop();
+        second_stack.push(node);
+        if (node->left)
+          first_stack.push(node->left);
+        if (node->right)
+          first_stack.push(node->right);
+      }
+      while (!second_stack.empty()) {
+        output.push_back(second_stack.top()->label());
+        second_stack.pop();
+      }
+    }
+  }
+
+}
+
+
+#if 0
+
 #include <cctype>
 #include <cstdlib>
 #include <cstring>
@@ -144,3 +254,5 @@ int main(int argc, char **argv) {
 
   return 0;
 }
+
+#endif

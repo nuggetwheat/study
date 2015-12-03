@@ -23,6 +23,8 @@
 #
 
 set(SRCS
+ch4.cpp
+ch4-test.cpp
 cutrod.cpp
 cutrod-test.cpp
 quicksort-test.cpp

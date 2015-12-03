@@ -23,36 +23,7 @@
 #
 
 set(SRCS
-gcd.cpp
-geometric.cpp
-test_sorting.cpp
-test_string.cpp
-test_tree.cpp
+quiz.cpp
 )
 
-add_executable(expr expr.cpp)
-add_executable(expr2 expr2.cpp)
-add_executable(heapsort heapsort.cpp)
-add_executable(huffman huffman.cpp)
-add_executable(mergesort mergesort.cpp)
-add_executable(radixsearch radixsearch.cpp)
-add_executable(search search.cpp)
-add_executable(sort sort.cpp)
-add_executable(stringsearch stringsearch.cpp)
-
-add_executable(sedgewick_driver driver.cpp ${SRCS})
-
-
-add_test(Sedgewick_Algorithms-expr expr)
-add_test(Sedgewick_Algorithms-expr2 expr2)
-add_test(Sedgewick_Algorithms-heapsort heapsort)
-add_test(Sedgewick_Algorithms-huffman huffman)
-add_test(Sedgewick_Algorithms-mergesort mergesort)
-add_test(Sedgewick_Algorithms-radixsearch radixsearch)
-add_test(Sedgewick_Algorithms-search search)
-add_test(Sedgewick_Algorithms-sort sort)
-add_test(Sedgewick_Algorithms-stringsearch stringsearch)
-
-add_test(Sedgewick_Algorithms sedgewick_driver)
-
-
+add_executable(quiz ${SRCS})

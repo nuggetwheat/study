@@ -25,6 +25,8 @@
 set(SRCS
 bits.cpp
 bits-test.cpp
+ch5.cpp
+ch5-test.cpp
 )
 
 add_executable(epi_driver driver.cpp ${SRCS})
