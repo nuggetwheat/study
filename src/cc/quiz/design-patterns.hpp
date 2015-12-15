@@ -45,7 +45,59 @@ variable:
   if (style == MOTIF)
     widgetFactory = new MotifFactory;
   else if (style == PM)
-    widgetFactory = new PMFactory;)" }
+    widgetFactory = new PMFactory;)" },
+    { "Explain the BUILDER design pattern.",
+        R"(
+Separates the construction of a complex object from its representation so that
+the same construction process can create different representations.
+
+The example presented in the book illustrates how a generic representation of a
+formatted text document is converted to various specialized formats (e.g. ASCII,
+TeX, etc).
+
+  class MazeBuilder {
+  public:
+    virtual void BuildMaze() {}
+    virtual void BuildRoom(int room) {}
+    virtual void BuildDoor(int roomFrom, int roomTo) {}
+    virtual Maze *GetMaze() { return nullptr; }
+  protected:
+    MazeBuilder();
+  };
+  
+  class StandardMazeBuilder : public MazeBuilder { ...
+  class ExoticMazeBuilder : public MazeBuilder { ...
+  
+  Maze *MazeGame::CreateMaze(MazeBuilder &builder) {
+    builder.BuildMaze();
+    builder.BuildRoom(1);
+    builder.BuildRoom(2);
+    builder.BuildDoor(1, 2);
+    return builder.GetMaze();
+  }
+  
+  Maze *MazeGame::CreateComplexMaze(MazeBuilder &builder) {
+    builder.BuildMaze();
+    builder.BuildRoom(1);
+    // ...
+    builder.BuildRoom(1001);
+    return builder.GetMaze();
+  })" },
+    { "What's the difference between the ABSTRACT FACTORY and BUILDER design patterns?",
+        R"(
+The ABSTRACT FACTORY pattern provides a factory for creating components of a
+product.  The client of the factory obtains concrete components from the factory
+through member function calls (e.g. createWindow, createScrollBar) and assembles
+them together.  The factory is not responsible for assembling the final product,
+it's just responsible for creating components.
+
+The BUILDER pattern also facilitates building a product, but unlike the ABSTRACT
+FACTORY, the builder is responsible for building a concrete version of the
+final product.  The client builds the product by calling a set of member
+functions that make logical (abstract) changes to the product.  Once all of the
+changes have been made, the final concrete product can be obtained through a
+call to another member function (e.g. getProduct).
+)" },
   };
 
 }

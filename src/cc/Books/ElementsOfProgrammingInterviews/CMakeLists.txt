@@ -27,9 +27,12 @@ bits.cpp
 bits-test.cpp
 ch5.cpp
 ch5-test.cpp
+ch6.cpp
+ch6-test.cpp
 )
 
 add_executable(epi_driver driver.cpp ${SRCS})
+target_link_libraries(epi_driver m)
 
 add_test(ElementsOfProgrammingInterviews epi_driver)
 
