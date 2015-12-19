@@ -29,10 +29,14 @@ ch5.cpp
 ch5-test.cpp
 ch6.cpp
 ch6-test.cpp
+ch7.cpp
+ch7-test.cpp
+ch19.cpp
+ch19-test.cpp
 )
 
 add_executable(epi_driver driver.cpp ${SRCS})
-target_link_libraries(epi_driver m)
+target_link_libraries(epi_driver StudyCommon m)
 
 add_test(ElementsOfProgrammingInterviews epi_driver)
 

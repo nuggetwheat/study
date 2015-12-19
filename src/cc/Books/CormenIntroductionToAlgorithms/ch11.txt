@@ -1,0 +1,36 @@
+
+= Hash Tables
+
+== Exercise
+
+=== 11.1-1
+
+Given a dynamic set S represented by a direct-address table T of length m,
+describe a procedure that finds the maximum element of S.  What is the
+worst-case performance?
+
+Start from the end of the direct-address array and walk backwards until you find
+a non-empty slot.  Worst case performance is O(n) if the table is empty.
+
+=== 11.1-2
+
+Describe how to use a bit vector to represent a dynamic set of distinct elements
+with no satellite data.
+
+If the keys of the set can be represented as integers in a small contiguous
+range, then each key can be by an offset in the bit vector.  To insert an item,
+set the bit corresponding to the offset defined by the key.  To search for an
+item is in the set, test the bit corresponding to the offset defined by the key.
+To delete an item, clear the bit correstponding to the offset defined by the
+key.
+
+=== 4.1-3
+
+It jumps around a bit from run to run.  For example here is the crossover points
+from seven consecutive runs:
+
+33 35 59 23 24 27 34
+
+=== 4.1-5
+
+

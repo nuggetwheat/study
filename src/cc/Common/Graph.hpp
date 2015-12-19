@@ -43,7 +43,7 @@ namespace study {
   class Graph {
   public:
     Graph() { }
-    Graph(EdgeType et, std::initializer_list<T> init);
+    Graph(EdgeType et, std::vector<T> init);
     void add_edge(const Edge<T> &e);
     void add_edges(const std::vector<Edge<T>> &edges);
     void clear_edges();
@@ -60,7 +60,7 @@ namespace study {
   };
 
   template <typename T>
-  Graph<T>::Graph(EdgeType et, std::initializer_list<T> init) : et_(et) {
+  Graph<T>::Graph(EdgeType et, std::vector<T> init) : et_(et) {
     for (auto elem : init) {
       vertices_.insert(elem);
       alists_.emplace(elem, std::list<T>());
