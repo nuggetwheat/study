@@ -1,5 +1,5 @@
-#ifndef quiz_linux_hpp
-#define quiz_linux_hpp
+#ifndef quiz_linux_containers_hpp
+#define quiz_linux_containers_hpp
 
 #include <initializer_list>
 
@@ -7,9 +7,14 @@
 
 namespace study {
 
-  const std::initializer_list<Item> linux {
-    { "Describe the Linux process states.",
+  const std::initializer_list<Item> linux_containers {
+    { "Describe control groups (cgroups).",
         R"(
+Control Groups provide a mechanism for aggregating/partitioning sets of
+tasks, and all their future children, into hierarchical groups with
+specialized behaviour.
+
+
 TASK_RUNNING
 
   Process is either executing on a CPU or waiting to be run.
@@ -728,4 +733,4 @@ task_struct - This is also known as the process descriptor and one is allocated 
 
 }
 
-#endif // quiz_linux_hpp
+#endif // quiz_linux_containers_hpp

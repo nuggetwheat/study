@@ -31,6 +31,8 @@ ch6.cpp
 ch6-test.cpp
 ch7.cpp
 ch7-test.cpp
+ch8.cpp
+ch8-test.cpp
 ch19.cpp
 ch19-test.cpp
 )
