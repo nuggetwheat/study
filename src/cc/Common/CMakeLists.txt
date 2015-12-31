@@ -28,6 +28,7 @@ set(DST_DIR "${HYPERTABLE_BINARY_DIR}/src/cc/Common")
 set(Common_SRCS
 FileUtils.cpp
 String.cpp
+Tree.cpp
 )
 
 add_library(StudyCommon ${Common_SRCS})

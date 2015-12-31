@@ -4,6 +4,7 @@
 #include "ch6-test.hpp"
 #include "ch7-test.hpp"
 #include "ch8-test.hpp"
+#include "ch9-test.hpp"
 #include "ch19-test.hpp"
 
 using namespace study;
@@ -17,6 +18,7 @@ int main(int argc, char **argv) {
   ch6_test();
   ch7_test();
   ch8_test();
+  ch9_test();
   ch19_test();
 
 }

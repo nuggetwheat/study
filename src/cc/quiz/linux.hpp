@@ -710,19 +710,103 @@ dentry object contains pointers to adjacent dentry objects in the same bucket.
 )"},
    { "Describe the objects used by the kernel to manage files and filesystems.",
        R"(
-task_struct - This is also known as the process descriptor and one is allocated for each process (thread) running in the system.  
 
-  /* file system info */
-  struct nameidata *nameidata;
+The following is a list of filesystem related kernel structures along with some
+filesystem specific fields.
 
-  /* filesystem information */
-  struct fs_struct *fs;
+task_struct
+-----------
+This is also known as the process descriptor and one is allocated for each
+process (thread) running in the system.
+  
+  struct nameidata *nameidata; // file system info
 
-  /* open file information */
-  struct files_struct *files;
+  struct fs_struct *fs;        // filesystem information
+  
+  struct files_struct *files;  // open file information
+  
+  struct nsproxy *nsproxy;     // namespaces
 
-  /* namespaces */
-  struct nsproxy *nsproxy;
+super_block
+-----------
+Stores information concerning a mounted filesystem.  For disk-based filesystems,
+this object usually corresponds to a 'filesystem control block' stored on disk.
+
+  struct file_system_type *s_type; // Filesystem type
+
+  struct list_head s_inodes;       // List of all inodes
+
+  struct list_head s_dirty;        // List of dirty inodes
+
+  struct list_head s_io;           // List of dirty inodes waiting to be
+                                   // written to disk
+
+  struct list_head s_files;        // List of file objects
+
+  struct list_head s_instances;    // Pointer to list of superblock objects of a
+                                   // List of file objectsgiven filesystem type
+
+inode
+-----
+Stores general information about a specific file.  For disk-based filesystems,
+this object usually corresponds to a file control block stored on disk.
+
+  struct list_head i_dentry;   // Head of the list of dentry oobjects
+                               // referencing this inode
+
+  unsigned int  i_nlink;       // Number of hard links
+
+  loff_t  i_size;              // File length in bytes
+
+  struct super_block *i_sb;    // Pointer to superblock object
+
+  struct file_lock *i_flock;   // Pointer to file lock list
+
+  struct address_space i_data; // address_space object of the file
+
+file
+----
+Stores information about the interaction between an open file and a process.
+
+  struct dentry *f_dentry;         // dentry object associated with the file
+
+  struct vfsmount *f_vfsmnt;       // Mounted filesystem containing the file
+
+  atomic_ f_count;                 // File object's reference counter
+
+  loff_t f_pos;                    // Current file offset (file pointer)
+
+  struct address_space *f_mapping; // Pointer to the file's address space object
+
+dentry
+------
+Stores information about the linking of a directory entry (that is, a particular
+name of the file) with the corresponding file.
+
+  struct inode *d_inode;      // Inode associated with filename
+
+  struct dentry *d_parent;    // Dentry object of parent directory
+
+  struct qstr d_name;         // Filename
+
+  struct list_head d_lru;     // Pointers for the list of unused dentries
+
+  struct list_head d_child;   // For directories, pointers for the list of
+                              // directory dentries in same parent directory
+
+  struct list_head d_subdirs; // For directories, head of list of subdirectory
+                              // dentries
+
+  struct list_head d_alias;   // Pointers for the list of dentries associated
+                              // with the same inode (alias)
+
+  int d_mounted;              // For directories, counter for the number of
+                              // filesystems mounted on this dentry
+
+fs_struct
+---------
+
+  
 )"}
   };
 
