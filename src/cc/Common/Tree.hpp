@@ -9,11 +9,19 @@ namespace study {
 
   template <typename T>
   struct BSTNode {
-    T data;
+    BSTNode() { }
+    BSTNode(T d, BSTNode<T> *p=nullptr) : data(d), parent(p) { }
+    T data {};
     std::unique_ptr<BSTNode<T>> left, right;
+    BSTNode<T> *parent {};
   };
 
-  extern std::unique_ptr<BSTNode<int>> buildTreeFigure10_1();
+  extern std::unique_ptr<BSTNode<int>> buildTreeFigure10_1(bool include_parent=false);
+  extern std::unique_ptr<BSTNode<int>> buildTreeFigure10_2(bool include_parent=false);
+  extern std::unique_ptr<BSTNode<int>> buildTreeFigure10_3a(bool include_parent=false);
+  extern std::unique_ptr<BSTNode<int>> buildTreeFigure10_3b(bool include_parent=false);
+  extern std::unique_ptr<BSTNode<int>> buildTreeFigure10_3c(bool include_parent=false);
+  extern std::unique_ptr<BSTNode<int>> buildTreeFigure10_4(bool include_parent=false);
 
 }
 

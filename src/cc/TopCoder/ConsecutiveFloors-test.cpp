@@ -39,7 +39,17 @@ namespace {
 namespace study {
 
   void test_ConsecutiveFloors() {
+    cout << "[TopCoder] ConsecutiveFloors" << endl;
     ConsecutiveFloors cf;
+    assert(cf.isConsistent<2>(cf_x1, cf_y1));
+    assert(!cf.isConsistent<2>(cf_x2, cf_y2));
+    assert(cf.isConsistent<3>(cf_x3, cf_y3));
+    assert(!cf.isConsistent<3>(cf_x4, cf_y4));
+    assert(cf.isConsistent<3>(cf_x5, cf_y5));
+    assert(cf.isConsistent<4>(cf_x6, cf_y6));
+    assert(!cf.isConsistent<5>(cf_x7, cf_y7));
+    assert(!cf.isConsistent<6>(cf_x8, cf_y8));
+#if 0
     cout << cf.isConsistent<2>(cf_x1, cf_y1) << endl;
     cout << cf.isConsistent<2>(cf_x2, cf_y2) << endl;
     cout << cf.isConsistent<3>(cf_x3, cf_y3) << endl;
@@ -48,6 +58,7 @@ namespace study {
     cout << cf.isConsistent<4>(cf_x6, cf_y6) << endl;
     cout << cf.isConsistent<5>(cf_x7, cf_y7) << endl;
     cout << cf.isConsistent<6>(cf_x8, cf_y8) << endl;
+#endif
   }
 
 }

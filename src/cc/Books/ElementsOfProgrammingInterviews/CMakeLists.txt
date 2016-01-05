@@ -35,6 +35,10 @@ ch8.cpp
 ch8-test.cpp
 ch9.cpp
 ch9-test.cpp
+ch10.cpp
+ch10-test.cpp
+ch12.cpp
+ch12-test.cpp
 ch19.cpp
 ch19-test.cpp
 )

@@ -223,7 +223,7 @@ namespace {
     expected.push_back( {28,0,3,1,28} );
     expected.push_back( {17,401,257} );
     expected.push_back( {641} );
-    auto result = BinaryTreeDepthOrder( buildTreeFigure10_1() );
+    vector<vector<int>> result = BinaryTreeDepthOrder( buildTreeFigure10_1() );
     assert(result == expected);
   }
 

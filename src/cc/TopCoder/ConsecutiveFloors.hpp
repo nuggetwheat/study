@@ -46,14 +46,14 @@ namespace study {
   class ConsecutiveFloors {
   public:
     template <int N>
-    std::string isConsistent(int64_t x[N], int64_t y[N]) {
+    bool isConsistent(int64_t x[N], int64_t y[N]) {
       int buildings = 0;
       int64_t floors = 0;
       for (auto i=N-1; i>=0; --i) {
         if (buildings) {
           int64_t runs_taken = floors - (buildings * (x[i] - 1));
           if (runs_taken > y[i])
-            return "Inconsistent";
+            return false;
           int64_t runs_remaining = y[i] - runs_taken;
           int64_t runs_per_building = x[i+1] - x[i];
           int64_t floors_per_building = runs_per_building + x[i] - 1;
@@ -74,7 +74,7 @@ namespace study {
           floors = x[i] + (y[i] - 1);
         }
       }
-      return "Consistent";
+      return true;
     }
   };
 
