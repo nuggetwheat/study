@@ -39,6 +39,10 @@ ch10.cpp
 ch10-test.cpp
 ch12.cpp
 ch12-test.cpp
+ch13.cpp
+ch13-test.cpp
+ch16.cpp
+ch16-test.cpp
 ch19.cpp
 ch19-test.cpp
 )
