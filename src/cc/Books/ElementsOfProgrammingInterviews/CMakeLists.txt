@@ -43,6 +43,8 @@ ch13.cpp
 ch13-test.cpp
 ch16.cpp
 ch16-test.cpp
+ch17.cpp
+ch17-test.cpp
 ch19.cpp
 ch19-test.cpp
 )
