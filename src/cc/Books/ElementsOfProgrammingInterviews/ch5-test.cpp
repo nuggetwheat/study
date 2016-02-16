@@ -39,6 +39,12 @@ namespace {
     }
   }
 
+  void testSwapBits() {
+    cout << "[ch5] SwapBits" << endl;
+    assert(SwapBits(73, 1, 6) == 11);
+  }
+
+
   void testClosestIntSameBitCount() {
     cout << "[ch5] ClosestIntSameBitCount" << endl;
     auto rng = bind(g_dist, g_re);
@@ -133,6 +139,7 @@ namespace study {
   void ch5_test() {
     testCountOneBits();
     testParity();
+    testSwapBits();
     testClosestIntSameBitCount();
     testArithmetic();
     testReverse();

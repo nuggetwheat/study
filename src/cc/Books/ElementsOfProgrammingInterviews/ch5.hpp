@@ -18,6 +18,9 @@ namespace study {
     return ParityStripLowest(x);
   }
 
+  // Swaps bits i and j in x
+  extern long SwapBits(long x, int i, int j);
+
   extern unsigned long ClosestIntSameBitCount(unsigned long x);
   extern unsigned long ClosestIntSameBitCount2(unsigned long x);
 

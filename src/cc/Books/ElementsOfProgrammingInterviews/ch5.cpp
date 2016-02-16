@@ -10,6 +10,8 @@ extern "C" {
 #include <math.h>
 }
 
+using namespace std;
+
 namespace {
   std::default_random_engine dre;  
 }
@@ -52,6 +54,14 @@ namespace study {
       x &= (x-1);
     }
     return result;
+  }
+
+  long SwapBits(long x, int i, int j) {
+    if (((x >> i) & 1) != ((x >> j) & 1)) {
+      unsigned long mask = (1 << i) | (1 << j);
+      x ^= mask;
+    }
+    return x;
   }
 
   unsigned long ClosestIntSameBitCount(unsigned long x) {
