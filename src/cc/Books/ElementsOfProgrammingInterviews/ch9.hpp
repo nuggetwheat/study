@@ -2,6 +2,8 @@
 #ifndef Books_ElementsOfProgrammingInterviews_ch9_hpp
 #define Books_ElementsOfProgrammingInterviews_ch9_hpp
 
+#include "reference/ch9.hpp"
+
 #include "Common/Tree.hpp"
 
 #include <cstdlib>
@@ -13,15 +15,11 @@
 
 namespace study {
 
-  class StackWithMax {
+  class StackWithMax : public reference::StackWithMax {
   public:
-    StackWithMax();
-    ~StackWithMax();
-    void push(int x);
-    int pop();
-    int max() const;
-  private:
-    void *state_ {};
+    void push(int x) override;
+    int pop() override;
+    int max() const override;
   };
 
   extern std::string PolishToReversePolish(const std::string &expression);
@@ -38,14 +36,9 @@ namespace study {
 
   extern std::vector<int> BSTInSortedOrder(const std::unique_ptr<BSTNode<int>> &tree);
 
-  struct PostingListNode {
-    int order {-1};
-    std::shared_ptr<PostingListNode> jump, next;
-  };
+  extern void SetJumpOrderRecursive(const std::shared_ptr<reference::PostingListNode> &list);
 
-  extern void SetJumpOrderRecursive(const std::shared_ptr<PostingListNode> &list);
-
-  extern void SetJumpOrderIterative(const std::shared_ptr<PostingListNode> &list);
+  extern void SetJumpOrderIterative(const std::shared_ptr<reference::PostingListNode> &list);
 
   extern std::vector<size_t> ExamineBuildingsWithSunset(std::istringstream *sin);
 
@@ -53,25 +46,18 @@ namespace study {
 
   extern std::vector<std::vector<int>> BinaryTreeDepthOrder(const std::unique_ptr<BSTNode<int>> &tree);
 
-  class QueueImplementedWithStacks {
+  class QueueImplementedWithStacks : public reference::QueueImplementedWithStacks {
   public:
-    void enqueue(int x);
-    int dequeue();
-  private:
-    std::stack<int> estack_, dstack_;
+    void enqueue(int x) override;
+    int dequeue() override;
   };
 
-  class QueueWithMax {
+  class QueueWithMax : public reference::QueueWithMax {
   public:
-    QueueWithMax();
-    ~QueueWithMax();
-    void enqueue(int x);
-    int dequeue();
-    int max() const;
-  private:
-    void *state_ {};
+    void enqueue(int x) override;
+    int dequeue() override;
+    int max() const override;
   };
-
 
 }
 

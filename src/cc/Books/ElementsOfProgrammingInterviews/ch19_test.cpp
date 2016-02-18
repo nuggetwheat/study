@@ -13,9 +13,15 @@
 #include <vector>
 
 #include "ch19.hpp"
+#include "reference/ch19.hpp"
 
 using namespace std;
 using namespace study;
+
+using reference::Color;
+using reference::BLACK;
+using reference::WHITE;
+using reference::Coordinate;
 
 namespace {
 
@@ -46,7 +52,7 @@ namespace {
     };
     Coordinate start { 9, 0 };
     Coordinate finish { 0, 9 };
-    vector<Coordinate> path = SearchMaze(maze, start, finish);
+    vector<Coordinate> path = study::SearchMaze(maze, start, finish);
     assert(equal(path.begin(), path.end(), expected.begin()));
   }
 
@@ -79,7 +85,7 @@ namespace {
     A.push_back( { BLACK, WHITE, BLACK, BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, BLACK } );
     A.push_back( { WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE } );
 
-    FlipColor(5, 4, &A);
+    study::FlipColor(5, 4, &A);
     expected.clear();
     expected.push_back( { BLACK, WHITE, BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, BLACK, BLACK } );
     expected.push_back( { WHITE, WHITE, BLACK, WHITE, WHITE, BLACK, WHITE, WHITE, BLACK, BLACK } );
@@ -93,7 +99,7 @@ namespace {
     expected.push_back( { BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, WHITE } );
     assert(A == expected);
 
-    FlipColor(3, 6, &A);
+    study::FlipColor(3, 6, &A);
     expected.clear();
     expected.push_back( { BLACK, WHITE, WHITE, WHITE, WHITE, WHITE, BLACK, BLACK, BLACK, BLACK } );
     expected.push_back( { WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, BLACK, BLACK } );

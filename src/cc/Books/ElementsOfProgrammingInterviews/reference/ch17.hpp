@@ -1,12 +1,7 @@
 
-#ifndef Books_ElementsOfProgrammingInterviews_ch17_hpp
-#define Books_ElementsOfProgrammingInterviews_ch17_hpp
+#ifndef Books_ElementsOfProgrammingInterviews_reference_ch17_hpp
+#define Books_ElementsOfProgrammingInterviews_reference_ch17_hpp
 
-#include "reference/ch17.hpp"
-
-#include "Common/Tree.hpp"
-
-#include <array>
 #include <cstdlib>
 #include <memory>
 #include <sstream>
@@ -15,7 +10,7 @@
 #include <unordered_set>
 #include <vector>
 
-namespace study {
+namespace reference {
 
   extern size_t FibonacciRecursive(size_t nth);
 
@@ -45,9 +40,13 @@ namespace study {
 
   extern bool Match(const std::vector<std::vector<int>> &A, const std::vector<int> &S);
 
-  extern int Knapsack(int capacity, const std::vector<reference::Item> &items);
+  struct Item {
+    int value, weight;
+  };
 
-  extern int KnapsackOptimized(int capacity, const std::vector<reference::Item> &items);
+  extern int Knapsack(int capacity, const std::vector<Item> &items);
+
+  extern int KnapsackOptimized(int capacity, const std::vector<Item> &items);
 
   extern int MinimizeDifference(const std::vector<int> &A);
 
@@ -73,4 +72,4 @@ namespace study {
 
 }
 
-#endif // Books_ElementsOfProgrammingInterviews_ch17_hpp
+#endif // Books_ElementsOfProgrammingInterviews_reference_ch17_hpp

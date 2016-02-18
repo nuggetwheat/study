@@ -132,18 +132,18 @@ namespace {
     assert(result == expected);
   }
 
-  std::shared_ptr<PostingListNode> createPostingList() {
-    std::vector<std::shared_ptr<PostingListNode>> nv;
-    std::shared_ptr<PostingListNode> list = std::make_shared<PostingListNode>();
+  std::shared_ptr<reference::PostingListNode> createPostingList() {
+    std::vector<std::shared_ptr<reference::PostingListNode>> nv;
+    std::shared_ptr<reference::PostingListNode> list = std::make_shared<reference::PostingListNode>();
     auto node = list;
     nv.push_back(node);
-    node->next = std::make_shared<PostingListNode>();
+    node->next = std::make_shared<reference::PostingListNode>();
     node = node->next;
     nv.push_back(node);
-    node->next = std::make_shared<PostingListNode>();
+    node->next = std::make_shared<reference::PostingListNode>();
     node = node->next;
     nv.push_back(node);
-    node->next = std::make_shared<PostingListNode>();
+    node->next = std::make_shared<reference::PostingListNode>();
     node = node->next;
     nv.push_back(node);
     nv[0]->jump = nv[2];
@@ -153,7 +153,7 @@ namespace {
     return list;
   }
 
-  std::vector<int> postingListToVector(const std::shared_ptr<PostingListNode> &list) {
+  std::vector<int> postingListToVector(const std::shared_ptr<reference::PostingListNode> &list) {
     std::vector<int> result;
     auto node = list;
     while (node) {
@@ -163,21 +163,15 @@ namespace {
     return result;
   }
 
-  struct PostingListNode {
-    int order {-1};
-    struct PostingListNode *jump {};
-    std::shared_ptr<PostingListNode> next;
-  };
-
   void testSetJumpOrder() {
     cout << "[ch9] SetJumpOrder" << endl;
     vector<int> expected { 0, 2, 1, 3 };
     auto list = createPostingList();
-    SetJumpOrderRecursive(list);
+    study::SetJumpOrderRecursive(list);
     auto result = postingListToVector(list);
     assert(result == expected);
     list = createPostingList();
-    SetJumpOrderIterative(list);
+    study::SetJumpOrderIterative(list);
     result = postingListToVector(list);
     assert(result == expected);
   }

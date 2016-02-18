@@ -1,26 +1,16 @@
 
-#ifndef Books_ElementsOfProgrammingInterviews_bits_hpp
-#define Books_ElementsOfProgrammingInterviews_bits_hpp
+#ifndef Books_ElementsOfProgrammingInterviews_ch5_hpp
+#define Books_ElementsOfProgrammingInterviews_ch5_hpp
 
 #include <cstdlib>
 
-namespace study {
+namespace reference {
 
   extern size_t CountOneBitsBruteForce(unsigned int x);
   extern size_t CountOneBitsStripLowest(unsigned int x);
-#if 0
-  inline size_t CountOneBits(unsigned int x) {
-    return CountOneBitsStripLowest(x);
-  }
-#endif
 
   extern short ParityBruteForce(unsigned int x);
   extern short ParityStripLowest(unsigned int x);
-#if 0
-  inline size_t Parity(unsigned int x) {
-    return ParityStripLowest(x);
-  }
-#endif
 
   // Swaps bits i and j in x
   extern long SwapBits(long x, int i, int j);
@@ -40,4 +30,4 @@ namespace study {
 
 }
 
-#endif // Books_ElementsOfProgrammingInterviews_bits_hpp
+#endif // Books_ElementsOfProgrammingInterviews_ch5_hpp

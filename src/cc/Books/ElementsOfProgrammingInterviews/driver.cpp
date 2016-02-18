@@ -1,16 +1,16 @@
 
 #include "bits.hpp"
-#include "ch5-test.hpp"
-#include "ch6-test.hpp"
-#include "ch7-test.hpp"
-#include "ch8-test.hpp"
-#include "ch9-test.hpp"
-#include "ch10-test.hpp"
-#include "ch12-test.hpp"
-#include "ch13-test.hpp"
-#include "ch16-test.hpp"
-#include "ch17-test.hpp"
-#include "ch19-test.hpp"
+#include "ch5_test.hpp"
+#include "ch6_test.hpp"
+#include "ch7_test.hpp"
+#include "ch8_test.hpp"
+#include "ch9_test.hpp"
+#include "ch10_test.hpp"
+#include "ch12_test.hpp"
+#include "ch13_test.hpp"
+#include "ch16_test.hpp"
+#include "ch17_test.hpp"
+#include "ch19_test.hpp"
 
 using namespace study;
 

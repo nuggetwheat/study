@@ -39,18 +39,40 @@ namespace {
   };
 }
 
-namespace study {
+namespace reference {
+
+  StackWithMax::StackWithMax() {
+    state_ = new stack_with_max_state;
+  }
+
+  StackWithMax::~StackWithMax() {
+    stack_with_max_state *state = (stack_with_max_state *)state_;
+    delete state;
+  }
 
   void StackWithMax::push(int x) {
-    reference::StackWithMax::push(x);
+    stack_with_max_state *state = (stack_with_max_state *)state_;
+    if (state->max.empty() || state->max.back().first < x)
+      state->max.push_back(make_pair(x, 1));
+    else
+      state->max.back().second++;
+    state->values.push_back(x);
   }
 
   int StackWithMax::pop() {
-    return reference::StackWithMax::pop();
+    stack_with_max_state *state = (stack_with_max_state *)state_;
+    assert(!state->values.empty() && !state->max.empty());
+    int ret = state->values.back();
+    state->values.pop_back();
+    if (--(state->max.back().second) == 0)
+      state->max.pop_back();
+    return ret;
   }
 
   int StackWithMax::max() const {
-    return reference::StackWithMax::max();
+    stack_with_max_state *state = (stack_with_max_state *)state_;
+    assert(!state->max.empty());
+    return state->max.back().first;
   }
 
   bool isOperator(const string &token) {
@@ -203,10 +225,10 @@ namespace study {
     return canonical_path;
   }
 
-  std::vector<int> BSTInSortedOrder(const std::unique_ptr<BSTNode<int>> &tree) {
+  std::vector<int> BSTInSortedOrder(const std::unique_ptr<study::BSTNode<int>> &tree) {
     std::vector<int> results;
-    stack<const BSTNode<int> *> tbd;
-    const BSTNode<int> *node = tree.get();
+    stack<const study::BSTNode<int> *> tbd;
+    const study::BSTNode<int> *node = tree.get();
     while (node) {
       while (node) {
         tbd.push(node);
@@ -222,7 +244,7 @@ namespace study {
     return results;
   }
 
-    void SetJumpOrderRecursiveHelper(const std::shared_ptr<reference::PostingListNode> &node, int *order) {
+    void SetJumpOrderRecursiveHelper(const std::shared_ptr<PostingListNode> &node, int *order) {
       if (node && node->order == -1) {
         node->order = (*order)++;
         SetJumpOrderRecursiveHelper(node->jump, order);
@@ -230,15 +252,15 @@ namespace study {
       }
     }
 
-    void SetJumpOrderRecursive(const std::shared_ptr<reference::PostingListNode> &list) {
+    void SetJumpOrderRecursive(const std::shared_ptr<PostingListNode> &list) {
       int order = 0;
       SetJumpOrderRecursiveHelper(list, &order);
     }
 
-    void SetJumpOrderIterative(const std::shared_ptr<reference::PostingListNode> &list) {
+    void SetJumpOrderIterative(const std::shared_ptr<PostingListNode> &list) {
       if (list) {
         int order = 0;
-        stack<std::shared_ptr<reference::PostingListNode>> tbd;
+        stack<std::shared_ptr<PostingListNode>> tbd;
         tbd.push(list);
         while (!tbd.empty()) {
           auto node = tbd.top();
@@ -292,9 +314,9 @@ namespace study {
     }
   }
 
-  std::vector<std::vector<int>> BinaryTreeDepthOrder(const std::unique_ptr<BSTNode<int>> &tree) {
+  std::vector<std::vector<int>> BinaryTreeDepthOrder(const std::unique_ptr<study::BSTNode<int>> &tree) {
     vector<vector<int>> result;
-    queue<BSTNode<int> *> next;
+    queue<study::BSTNode<int> *> next;
     next.push(tree.get());
     while (!next.empty()) {
       vector<int> level;
@@ -313,22 +335,68 @@ namespace study {
   }
 
   void QueueImplementedWithStacks::enqueue(int x){
-    reference::QueueImplementedWithStacks::enqueue(x);
+    estack_.push(x);
   }
 
   int QueueImplementedWithStacks::dequeue() {
-    return reference::QueueImplementedWithStacks::dequeue();
+    int ret;
+    if (dstack_.empty()) {
+      while (!estack_.empty()) {
+        dstack_.push(estack_.top());
+        estack_.pop();
+      }
+    }
+    else if (!estack_.empty()) {
+      stack<int> tmp;
+      while (!dstack_.empty()) {
+        tmp.push(dstack_.top());
+        dstack_.pop();
+      }
+      while (!estack_.empty()) {
+        dstack_.push(estack_.top());
+        estack_.pop();
+      }
+      while (!tmp.empty()) {
+        dstack_.push(tmp.top());
+        tmp.pop();
+      }
+    }
+    assert(!dstack_.empty());
+    ret = dstack_.top();
+    dstack_.pop();
+    return ret;
+  }
+
+  QueueWithMax::QueueWithMax() {
+    state_ = new queue_with_max_state;
+  }
+
+  QueueWithMax::~QueueWithMax() {
+    queue_with_max_state *state = (queue_with_max_state *)state_;
+    delete state;
   }
 
   void QueueWithMax::enqueue(int x) {
-    reference::QueueWithMax::enqueue(x);
+    queue_with_max_state *state = (queue_with_max_state *)state_;
+    while (!state->max.empty() && state->max.back() < x)
+      state->max.pop_back();
+    state->max.push_back(x);
+    state->values.push(x);
   }
 
   int QueueWithMax::dequeue() {
-    return reference::QueueWithMax::dequeue();
+    queue_with_max_state *state = (queue_with_max_state *)state_;
+    assert(!state->values.empty() && !state->max.empty());
+    int ret = state->values.front();
+    state->values.pop();
+    if (state->max.front() == ret)
+      state->max.pop_front();
+    return ret;
   }
 
   int QueueWithMax::max() const {
-    return reference::QueueWithMax::max();
+    queue_with_max_state *state = (queue_with_max_state *)state_;
+    assert(!state->max.empty());
+    return state->max.front();
   }
 }

@@ -103,7 +103,7 @@ namespace {
 
   void testKnapsack() {
     cout << "[ch17] Knapsack" << endl;
-    vector<Item> items;
+    vector<reference::Item> items;
     items.push_back({65,20});
     items.push_back({35,8});
     items.push_back({245,60});
@@ -120,8 +120,8 @@ namespace {
     items.push_back({100,50});
     items.push_back({220,40});
     items.push_back({99,10});
-    assert(Knapsack(130, items) == 695);
-    assert(KnapsackOptimized(130, items) == 695);
+    assert(study::Knapsack(130, items) == 695);
+    assert(study::KnapsackOptimized(130, items) == 695);
   }
 
   void testMinimizeDifference() {
